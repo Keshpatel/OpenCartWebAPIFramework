@@ -44,7 +44,9 @@ test('Login using invalid credentials with data driven with fixture test', async
     }
 });
 
-//2 . Without fixtures , parallel mode . read csv data directly and loop the test method( test() ) , inside for loop .
+//2 . Without fixtures , parallel mode .
+//  read csv data directly and loop the test method( test() ) ,
+//  inside for loop .
 let testData = CsvHelper.readCsv('src/data/loginData.csv');
 for(let row of testData) {
     test(`invalid login test with -${row.username} - ${row.password}`, async ({ loginPage }) => {
@@ -72,4 +74,3 @@ for(let row of loginJsonTestData) {
         expect(await loginPage.idInvalidLoginErrorDisplayed()).toBeTruthy();
     });
 }
-

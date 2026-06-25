@@ -1,10 +1,7 @@
-import { get } from 'node:http';
 import {test , expect } from '../../src/fixtures/apifixtures.js'
-
 
 const TOKEN = process.env.API_Token;
 let AUTH_HEADER = {Authorization: `Bearer ${TOKEN}`};
-
 
 //post : get
 //post -put 
@@ -74,4 +71,3 @@ test('Delete a User Test', async ({ apiHelper }) => {
     expect(getResponse.status).toBe(404);
     expect(getResponse.body.message).toBe('Resource not found');    
 });
-

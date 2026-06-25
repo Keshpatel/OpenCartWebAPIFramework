@@ -31,7 +31,7 @@ constructor(page: Page) {
 };
 
     //Actions (methods) / behavior      
-    /***
+    /* **
      * getProductInfo(): @returns => Product Information 
      * Header , Images , MetaData , Pricing Data 
      * */

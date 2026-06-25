@@ -31,7 +31,7 @@ constructor(page: Page) {
     async isForgotPwdLinkExist(): Promise<boolean> {
         return await this.forgottenPasswordLink.isVisible();
     }
-    async doLogin(username:string , password:string): Promise<void> {   //tom_smith@3dTechnode.ca   : Tom , smith , !Spring123
+    async doLogin(username:string , password:string): Promise<void> { 
         console.log(`user login info: ${username} : ${password}`);
         await this.emailId.fill(username);
         await this.password.fill(password);

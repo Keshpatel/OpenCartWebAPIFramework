@@ -3,7 +3,6 @@ import { CsvHelper } from '../src/utils/CsvHelper.js';
 
 test.beforeEach(async ({loginPage}) => {   
     await loginPage.gotoLoginPage();
-    //await loginPage.doLogin('tom_smith@3dTechnode.ca','!Spring123');
     await loginPage.doLogin(process.env.APP_USERNAME!, process.env.APP_PASSWORD!);
 });
 

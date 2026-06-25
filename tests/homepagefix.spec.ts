@@ -2,7 +2,7 @@ import { test, expect } from '../src/fixtures/pagefixtures.js';
 
 test.beforeEach(async ({loginPage}) => {   
     await loginPage.gotoLoginPage();
-    await loginPage.doLogin('tom_smith@3dTechnode.ca','!Spring123');
+     await loginPage.doLogin(process.env.USERID!,process.env.PWD!); 
 });
 
 //common test for all pages 

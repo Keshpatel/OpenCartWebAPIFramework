@@ -34,12 +34,10 @@ test('Mock the search data API ', async({page}) => {
 
      // URL can be any thing
     await page.goto('https://abc1234.com/opencart/index.php?route=product/search&search=macbook');
-    await page.pause();
-
+   
     let fakeJson = await page.evaluate(async () => {
         let fakeRes = await fetch('https://abc1234.com/opencart/index.php?route=product/search&search=macbook');
         return await fakeRes.json();
     });
-    console.log("Fake Jason Response : ", fakeJson);
-    
+    console.log("Fake Jason Response : ", fakeJson);    
 });

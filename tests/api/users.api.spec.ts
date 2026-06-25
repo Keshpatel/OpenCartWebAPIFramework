@@ -1,8 +1,7 @@
-import { expect, test } from '@playwright/test'
+import {test , expect } from '../../src/fixtures/apifixtures.js'
 
-
-let Auth_Token = { Authorization: 'Bearer e06b19d3b478ca478d76c5bb03a11644c9010b587ac309a9c0d2344b6586b0b9'};
-
+const TOKEN = process.env.API_Token;
+let Auth_Token = {Authorization: `Bearer ${TOKEN}`};
 
 test('GoRestAPI - Verify Create User GET call test ', async({ request }) => {
     

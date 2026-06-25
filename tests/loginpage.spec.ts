@@ -24,7 +24,7 @@ test('verify Forgot Password link test', async() => {
 });
 
 test('verify User able to logIn Successfully  test', async() => {
-await loginPage.doLogin('tom_smith@3dTechnode.ca','!Spring123');
+await loginPage.doLogin(process.env.USERID!,process.env.PWD!); 
 expect.soft(await homePage.isLogoutLinkExist()).toBeTruthy();
 expect.soft(await homePage.getPageTitle()).toBe('My Account');   // Home Page title 
 
