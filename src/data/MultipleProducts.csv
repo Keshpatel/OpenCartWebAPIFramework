@@ -1,0 +1,5 @@
+SearchKey,ProductName,ProductHeader,Brand,ProductCode,Price,ExTaxPrice
+macbook,MacBook Pro,MacBook Pro,Apple,Product 18,"$2,000.00","$2,000.00"
+ipod,iPod Classic,iPod Classic,Apple,Product 20,$122.00,$100.00
+imac,iMac,iMac,Apple,Product 14,$122.00,$100.00
+iphone,iPhone,iPhone,Apple,Product 11,$123.20,$101.00

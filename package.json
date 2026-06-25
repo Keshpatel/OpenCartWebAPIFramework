@@ -1,0 +1,34 @@
+{
+  "name": "opencartwebframework_pw",
+  "version": "1.0.0",
+  "description": "Open Cart Framework design Using Page Object Model POM",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:chrome": "npx playwright test --project=chromium",
+    "allure:generate": "npx allure generate allure-results --clean -o allure-report",
+    "allure:open": "npx allure open allure-report",
+    "allure:report": "npm run allure:generate && npm run allure:open",
+    "test:allure": "npx playwright test && npm run allure:generate && npm run allure:open",
+    "allure:clean": "rmdir /s /q allure-results & rmdir /s /q allure-report"
+  },
+  "keywords": [],
+  "author": "K3D Tech Framework",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "@types/node": "^25.9.1",
+    "allure-commandline": "^2.42.0",
+    "allure-playwright": "^3.9.0"
+  },
+  "dependencies": {
+    "ajv": "^8.20.0",
+    "csv-parse": "^6.2.1",
+    "csv-parser": "^3.2.1",
+    "dotenv": "^17.4.2",
+    "xlsx": "^0.18.5"
+  }
+}
+
