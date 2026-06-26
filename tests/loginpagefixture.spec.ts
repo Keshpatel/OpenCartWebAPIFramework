@@ -67,7 +67,7 @@ for(let row of loginTestData) {
 }
 
 
-let loginJsonTestData = JsonHelper.readJson('src/data/logindata.json');
+let loginJsonTestData = JsonHelper.readJson('src/data/loginData.json');
 for(let row of loginJsonTestData) {
     test(`invalid login test with json data  -${row.username} - ${row.password}`, async ({ loginPage }) => {
         await loginPage.doLogin(row.username!, row.password!);
