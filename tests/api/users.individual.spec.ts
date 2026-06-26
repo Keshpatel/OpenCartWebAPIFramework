@@ -3,6 +3,7 @@ import {test , expect } from '../../src/fixtures/apifixtures.js'
 const TOKEN = process.env.API_Token;
 let AUTH_HEADER = {Authorization: `Bearer ${TOKEN}`};
 
+
 //post : get
 //post -put 
 //post -get 
@@ -24,7 +25,7 @@ async function createUser(apiHelper: any) {
 }
 
 //Test - 1 POST ----> UserId ---> Get /userID -- verify 
-test('Creaet a User Test', async ({ apiHelper }) => {
+test('Create a User Test', async ({ apiHelper }) => {
     //create a user :
     let userResponse = await createUser(apiHelper);
 
