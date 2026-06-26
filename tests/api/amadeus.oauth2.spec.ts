@@ -59,8 +59,5 @@ test('GET -- Get location data test',async ({ request }) => {
     expect(locationA.id).toBe('CMUC')
 
     expect(locationA.address.countryName).toBe('GERMANY');
-
-
-
 });
 
