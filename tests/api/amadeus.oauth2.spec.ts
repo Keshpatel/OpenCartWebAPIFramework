@@ -33,6 +33,7 @@ test('GET -- Get location data test',async ({ request }) => {
         keyword: 'MUC',
         countryCode: 'DE'
     };
+
     let locationResponse = await request.get(`${baseURL}${endPointURL}`, {
         headers: {
             Authorization: `Bearer ${accessToken}`
