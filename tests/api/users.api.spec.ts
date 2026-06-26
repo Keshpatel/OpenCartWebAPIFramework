@@ -1,12 +1,12 @@
 import {test , expect } from '../../src/fixtures/apifixtures.js'
 
-const TOKEN = process.env.API_Token;
-let Auth_Token = {Authorization: `Bearer ${TOKEN}`};
+const TOKEN = process.env.API_TOKEN;
+const AUTH_HEADER = {Authorization: `Bearer ${TOKEN}`};
 
 test('GoRestAPI - Verify Create User GET call test ', async({ request }) => {
     
     let response = await request.get('https://gorest.co.in/public/v2/users',{
-            headers: Auth_Token
+            headers: AUTH_HEADER
     });
     // console.log(response);
 
@@ -28,7 +28,7 @@ test('GoRestAPI - Verify Create User - POST call test', async({ request }) => {
         };
      
         let response = await request.post('https://gorest.co.in/public/v2/users',{
-            headers: Auth_Token,
+            headers: AUTH_HEADER,
             data: userData
         });
 
@@ -50,7 +50,7 @@ test('GoRestAPI - Verify Update User - PUT call test', async({ request }) => {
         };
      
         let response = await request.put('https://gorest.co.in/public/v2/users/8512563',{
-            headers: Auth_Token,
+            headers: AUTH_HEADER,
             data: userData
         });
 
@@ -67,7 +67,7 @@ test('GoRestAPI - Verify Delete User - DELETE call test', async({ request }) => 
     
     
         let response = await request.delete('https://gorest.co.in/public/v2/users/8512563',{
-            headers: Auth_Token,
+            headers: AUTH_HEADER,
         });
 
 

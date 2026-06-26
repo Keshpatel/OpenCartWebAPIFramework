@@ -1,7 +1,7 @@
 import {test , expect } from '../../src/fixtures/apifixtures.js'
 
-const TOKEN = process.env.API_Token;
-let AUTH_HEADER = {Authorization: `Bearer ${TOKEN}`};
+const TOKEN = process.env.API_TOKEN;
+const AUTH_HEADER = {Authorization: `Bearer ${TOKEN}`};
 
 
 //post : get

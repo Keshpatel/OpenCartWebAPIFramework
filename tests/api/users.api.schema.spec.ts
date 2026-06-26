@@ -6,8 +6,8 @@
 import { test, expect } from '../../src/fixtures/apifixtures.js';
 import { Ajv } from 'ajv'
 
-let TOKEN = process.env.API_Token;
-let AUTH_HEADER = { Authorization: `Bearer ${TOKEN}`}
+const TOKEN = process.env.API_TOKEN;
+const AUTH_HEADER = {Authorization: `Bearer ${TOKEN}`};
 
 //setup the AJV:
 let ajv = new Ajv();

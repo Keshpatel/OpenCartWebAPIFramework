@@ -1,6 +1,6 @@
 import { test , expect } from '@playwright/test'
 
-let OAUTH_CONFIG = {
+const OAUTH_CONFIG = {
     tokenURL: 'https://test.api.amadeus.com/v1/security/oauth2/token',
     clientId: process.env.OAUTH_CLIENT_ID!,
     clientSecret: process.env.OAUTH_CLIENT_SECRET!,
