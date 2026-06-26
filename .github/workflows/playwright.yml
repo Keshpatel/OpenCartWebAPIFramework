@@ -12,7 +12,7 @@ on:
 jobs:
   playwright-tests:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
 
     steps:
       - name: Checkout Repository
@@ -33,15 +33,12 @@ jobs:
       - name: Run Playwright Tests
         run: npx playwright test --project=chromium
         env:
-          ENV: ${{ github.event.inputs.environment || 'QA' }}
-
+          ENV: qa
           BASE_URL: ${{ secrets.BASE_URL }}
           APP_USERNAME: ${{ secrets.APP_USERNAME }}
           APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
-
           USERID: ${{ secrets.USERID }}
           PWD: ${{ secrets.PWD }}
-
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
           API_TOKEN: ${{ secrets.API_TOKEN }}
 

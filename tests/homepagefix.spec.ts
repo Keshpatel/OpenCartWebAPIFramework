@@ -2,7 +2,7 @@ import { test, expect } from '../src/fixtures/pagefixtures.js';
 
 test.beforeEach(async ({loginPage}) => {   
     await loginPage.gotoLoginPage();
-     await loginPage.doLogin(process.env.USERID!,process.env.PWD!); 
+    await loginPage.doLogin(process.env.APP_USERNAME!, process.env.APP_PASSWORD!);
 });
 
 //common test for all pages 
