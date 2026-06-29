@@ -5,6 +5,7 @@ export class CartPage extends BasePage {
 
     private readonly headers: Locator;
     private readonly shoppingCart: Locator;
+    private readonly emptyShoppingCartElement: Locator;
     private readonly productImage: Locator;
     private readonly productName: Locator;
 
@@ -56,13 +57,15 @@ export class CartPage extends BasePage {
     this.applyGiftCert = page.getByRole('button', { name: 'Apply Gift Certificate' });
     this.alertMessage = page.locator('#checkout-cart .alert');
     this.totalPriceModel = page.locator('.table.table-bordered').last();
-    this.removeProductFromCartBtn = page.locator('.btn-danger');
+    this.removeProductFromCartBtn = page.locator('#content .btn-danger');
+    this.emptyShoppingCartElement = page.locator('#content p');
+    
     };
 
     async clearCart(): Promise<void> {
         await this.page.goto('https://naveenautomationlabs.com/opencart/index.php?route=checkout/cart');
-        while (await this.page.locator('.btn-danger').count() > 0) {
-            await this.removeProductFromCartBtn.last().click();
+        while (await this.removeProductFromCartBtn.count() > 0) {
+           await this.removeProductFromCartBtn.first().click();
         }
     }
 
@@ -82,7 +85,7 @@ export class CartPage extends BasePage {
     }
 
     async removeProductFromCart(): Promise<void> {
-        await this.removeProductFromCartBtn.last().click();
+        await this.removeProductFromCartBtn.click();
     }    
 
     //After clicking Apply Coupon, Playwright immediately reads the alert before the DOM updates.
