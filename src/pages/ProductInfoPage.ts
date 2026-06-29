@@ -47,7 +47,6 @@ constructor(page: Page) {
         return await this.header.innerText();
     }    
     async getProductImages(): Promise<number> {
-        //await this.page.waitForTimeout(4000);
         await this.productImages.first().waitFor({state: 'visible'});
         return await this.productImages.count();
     }
@@ -73,6 +72,7 @@ constructor(page: Page) {
     }
 
     async addToCart(): Promise<void> {
+        await this.quantityTextBox.waitFor();
         await this.quantityTextBox.fill('1');
         await this.addToCartButton.click();
         await this.shoppingCart.click();

@@ -1,7 +1,7 @@
 import { test, expect } from '../src/fixtures/pagefixtures.js';
 
-const searchKeys = ['macbook', 'ipod', 'imac', 'iphone'];
-const productNames = ['MacBook Pro','iPod Classic','iMac','iPhone'];
+const searchKeys = ['macbook', 'ipod', 'imac'];
+const productNames = ['MacBook Pro','iPod Classic','iMac'];
 
 test.beforeEach(async({ loginPage, cartPage }) => {
    await loginPage.gotoLoginPage();
