@@ -8,7 +8,17 @@ on:
   #   branches:
   #     - master
   workflow_dispatch:
-
+   inputs:
+     enviroment:
+       description: 'select enviroment'
+       required: true
+       default: 'QA'
+       type: choice
+       options:
+         - QA
+         - stage
+         - UAT
+         
 jobs:
   playwright-tests:
     runs-on: ubuntu-latest
