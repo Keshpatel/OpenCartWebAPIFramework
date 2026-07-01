@@ -11,20 +11,22 @@ on:
   #     - master
   workflow_dispatch:
    inputs:
-     enviroment:
-       description: 'select enviroment'
+     environment:
+       description: 'Select Environment'
        required: true
        default: 'QA'
        type: choice
        options:
+         - DEV
          - QA
-         - stage
          - UAT
          
 jobs:
   playwright-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+
+    environment: ${{ github.event.inputs.environment || 'QA'}}
 
     steps:
       - name: Checkout Repository
