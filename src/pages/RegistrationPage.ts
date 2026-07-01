@@ -42,6 +42,7 @@ async enterUserInformation(firstname:string , lastname:string, password:string):
     const email = RandomDataUtil.generateEmail(firstname);
     const phone = RandomDataUtil.generatePhone();
     console.log('Entering New User Information to registration');  
+    
     await this.firstName.fill(firstname);
     await this.lastName.fill(lastname);   
     await this.email.fill(email);
@@ -51,6 +52,8 @@ async enterUserInformation(firstname:string , lastname:string, password:string):
     await this.newsLetter.click();  
     await this.agreeCheckBox.check();    
     await this.continueButton.click();
+    console.log("New Email Registed : ",);
+    console.log("New Email Registed : ",);
 }
 async verifyRegistrationSuccess(): Promise<string> {
   return await this.registrationSuccessMessage.innerText();

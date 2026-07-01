@@ -58,12 +58,10 @@ jobs:
       - name: Run Playwright Tests
         run: npx playwright test --project=chromium
         env:
-          ENV: qa
+          ENV: ${{ github.event.inputs.environment || 'QA' }}
           BASE_URL: ${{ secrets.BASE_URL }}
           APP_USERNAME: ${{ secrets.APP_USERNAME }}
           APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
-          USERID: ${{ secrets.USERID }}
-          PWD: ${{ secrets.PWD }}
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
           API_TOKEN: ${{ secrets.API_TOKEN }}
           OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
