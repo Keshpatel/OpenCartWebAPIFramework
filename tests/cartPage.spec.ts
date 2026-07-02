@@ -10,7 +10,7 @@ test.beforeEach(async({ loginPage, cartPage }) => {
    await cartPage.clearCart();
 });
 
-test('Verify shopping cart product information test ', async ({ homePage, searchResultsPage, productDetailsPage,cartPage }) => {
+test('@regression Verify shopping cart product information test ', async ({ homePage, searchResultsPage, productDetailsPage,cartPage }) => {
       for (let i = 0; i < searchKeys.length; i++) 
          {
             await homePage.goToHomePage();

@@ -50,10 +50,10 @@ async enterUserInformation(firstname:string , lastname:string, password:string):
     await this.password.fill(password);
     await this.confirmPassword.fill(password);   
     await this.newsLetter.click();  
-    await this.agreeCheckBox.check();    
+    await this.agreeCheckBox.check(); 
+    // Prints the Username and Pwds for review the registerd users login info.
     await this.continueButton.click();
-    console.log("New Email Registed : ",);
-    console.log("New Email Registed : ",);
+    
 }
 async verifyRegistrationSuccess(): Promise<string> {
   return await this.registrationSuccessMessage.innerText();

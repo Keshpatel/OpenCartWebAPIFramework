@@ -8,20 +8,20 @@ test.beforeEach(async ({loginPage }) => {
 });
 
 //common test for all pages 
-test('verify logo and footer on product page test', async({basePage}) => {
+test('@sanity verify logo and footer on product page test', async({basePage}) => {
 expect(await basePage.isLogoVisible()).toBeTruthy();
 });
 
-test('verify all footers exist on the page test', async({basePage}) => {
+test('@sanityverify all footers exist on the page test', async({basePage}) => {
 expect(await basePage.checkFootersCounts()).toBe(16);
 });
 
-test('Login Page with fixture test', async({loginPage}) => {
+test('@sanity Login Page with fixture test', async({loginPage}) => {
     const pageTitle = await loginPage.getPageTitle();
     console.log('Login Page title : ' , pageTitle);
     expect(pageTitle).toBe('Account Login');
 });
-test('verify Forgot Password link with fixture test', async({loginPage}) => {
+test('@regression verify Forgot Password link with fixture test', async({loginPage}) => {
     let flag = await loginPage.isForgotPwdLinkExist();
     console.log(flag);
     expect(flag).toBeTruthy();
@@ -49,7 +49,7 @@ test('Login using invalid credentials with data driven with fixture test', async
 //  inside for loop .
 let testData = CsvHelper.readCsv('src/data/loginData.csv');
 for(let row of testData) {
-    test(`invalid login test with -${row.username} - ${row.password}`, async ({ loginPage }) => {
+    test(`@sanity invalid login test with -${row.username} - ${row.password}`, async ({ loginPage }) => {
         await loginPage.doLogin(row.username!, row.password!);
         expect(await loginPage.idInvalidLoginErrorDisplayed()).toBeTruthy();
     });

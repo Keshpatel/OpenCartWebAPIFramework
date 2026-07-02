@@ -20,7 +20,7 @@ test('Verify registration page title test', async({registrationPage}) => {
 
 let userData = CsvHelper.readCsv("src/data/registerData.csv");
 for(let row of userData) {
-test(`Enter New User Info test Entering for - ${row.firstname} - ${row.lastname}` ,async({ registrationPage }) => {
+test(`@sanity Enter New User Info test Entering for - ${row.firstname} - ${row.lastname}` ,async({ registrationPage }) => {
    await registrationPage.enterUserInformation(row.firstname!, row.lastname!, row.password!);
    const successMessage = await registrationPage.verifyRegistrationSuccess();
    expect(successMessage).toBe('Your Account Has Been Created!');   
