@@ -1,0 +1,4 @@
+user login info: kdpatel8184@gmail.com : !moonLight2026!
+Search Key is macbook
+Headers are :  [ 'Image', 'Product Name', 'Model', 'Quantity', 'Unit Price', 'Total' ]
+Warning: Coupon is either invalid, expired or reached its usage limit!

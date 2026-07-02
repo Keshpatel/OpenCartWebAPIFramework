@@ -1,0 +1,74 @@
+[
+  {
+    id: 8534070,
+    name: 'Keshini API Updated',
+    email: 'apiAutomation1783034281814@autoTest.com',
+    gender: 'female',
+    status: 'inactive'
+  },
+  {
+    id: 8534069,
+    name: 'schema test',
+    email: 'automation_1783034279244@newOpen.com',
+    gender: 'female',
+    status: 'active'
+  },
+  {
+    id: 8534057,
+    name: 'Kkk API Updated01',
+    email: 'apiAutomation1783031963541@autoTest.com',
+    gender: 'female',
+    status: 'inactive'
+  },
+  {
+    id: 8534056,
+    name: 'Keshini API',
+    email: 'apiAutomation1783031963507@autoTest.com',
+    gender: 'female',
+    status: 'active'
+  },
+  {
+    id: 8534054,
+    name: 'schema test',
+    email: 'automation_1783031960093@newOpen.com',
+    gender: 'female',
+    status: 'active'
+  },
+  {
+    id: 8533498,
+    name: 'Rep. Abhisyanta Patel',
+    email: 'rep_abhisyanta_patel@kessler.example',
+    gender: 'female',
+    status: 'active'
+  },
+  {
+    id: 8533497,
+    name: 'Apsara Dutta',
+    email: 'dutta_apsara@schmeler.test',
+    gender: 'male',
+    status: 'active'
+  },
+  {
+    id: 8533496,
+    name: 'Aishani Asan I',
+    email: 'asan_i_aishani@ferry.test',
+    gender: 'male',
+    status: 'inactive'
+  },
+  {
+    id: 8533495,
+    name: 'Ananda Sinha',
+    email: 'ananda_sinha@miller.test',
+    gender: 'male',
+    status: 'active'
+  },
+  {
+    id: 8533494,
+    name: 'Goswami Panicker',
+    email: 'goswami_panicker@luettgen-boyle.example',
+    gender: 'female',
+    status: 'inactive'
+  }
+]
+200
+OK
