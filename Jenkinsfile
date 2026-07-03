@@ -76,7 +76,7 @@ pipeline {
                 echo "========================================="
                 dir('qa-tests') {
                     git url: 'https://github.com/Keshpatel/OpenCartWebAPIFramework.git',
-                        branch: 'main'
+                        branch: 'master'
                     bat 'npm ci'
                     bat 'npx playwright install --with-deps chromium'
                 }
@@ -375,7 +375,7 @@ pipeline {
 
 *Overall: ${statusEmoji} ${buildStatus}*
 *Environment:* `${params.ENVIRONMENT}`
-*Branch:* `${env.BRANCH_NAME ?: 'main'}`
+*Branch:* `${env.BRANCH_NAME ?: 'master'}`
 *Build:* #${env.BUILD_NUMBER}
 *Duration:* ${currentBuild.durationString.replace(' and counting', '')}
 
