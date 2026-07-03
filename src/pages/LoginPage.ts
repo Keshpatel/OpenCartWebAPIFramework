@@ -23,8 +23,17 @@ constructor(page: Page) {
     
     //public page actions (methods) / behavior
     async gotoLoginPage(): Promise<void> {
-        await this.page.goto('https://naveenautomationlabs.com/opencart/index.php?route=account/login');
-    }    
+        console.log("==================================");
+        console.log("ENV =", process.env.ENV);
+        console.log("BASE_URL =", process.env.BASE_URL);
+        console.log("==================================");
+        await this.page.goto(`https://naveenautomationlabs.com/opencart/index.php?route=account/login`, {
+                                          waitUntil: "domcontentloaded",
+                                          timeout: 60000 
+                                    });
+                                    
+    }
+      
     async getLoginPageTitle(): Promise<string> {
         return await this.page.title();
     }
