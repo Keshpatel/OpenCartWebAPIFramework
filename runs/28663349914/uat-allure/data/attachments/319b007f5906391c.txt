@@ -1,0 +1,4 @@
+==================================
+ENV = UAT
+BASE_URL = https://naveenautomationlabs.com
+==================================
