@@ -9,11 +9,11 @@ test.beforeEach(async ({loginPage }) => {
 
 //common test for all pages 
 test('@sanity verify logo and footer on product page test', async({basePage}) => {
-expect(await basePage.isLogoVisible()).toBeTruthy();
+    expect(await basePage.isLogoVisible()).toBeTruthy();
 });
 
 test('@sanityverify all footers exist on the page test', async({basePage}) => {
-expect(await basePage.checkFootersCounts()).toBe(16);
+    expect(await basePage.checkFootersCounts()).toBe(16);
 });
 
 test('@sanity Login Page with fixture test', async({loginPage}) => {
@@ -29,9 +29,9 @@ test('@regression verify Forgot Password link with fixture test', async({loginPa
 test('verify User able to logIn Successfully with fixture test', async({loginPage, homePage}) => {
     // console.log("Spec USERNAME =", process.env.USERNAME);
     // console.log("Spec PASSWORD =", process.env.PASSWORD);
-await loginPage.doLogin(process.env.APP_USERNAME!, process.env.APP_PASSWORD!);
-expect.soft(await homePage.isLogoutLinkExist()).toBeTruthy();
-expect.soft(await homePage.getPageTitle()).toBe('My Account');
+    await loginPage.doLogin(process.env.APP_USERNAME!, process.env.APP_PASSWORD!);
+    expect.soft(await homePage.isLogoutLinkExist()).toBeTruthy();
+    expect.soft(await homePage.getPageTitle()).toBe('My Account');
 });
 
 // 1.  Test data using fixture 

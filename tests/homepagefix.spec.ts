@@ -7,7 +7,7 @@ test.beforeEach(async ({loginPage}) => {
 
 //common test for all pages 
 test('verify logo and footer on home page test', async({basePage}) => {
-expect(await basePage.isLogoVisible()).toBeTruthy();
+    expect(await basePage.isLogoVisible()).toBeTruthy();
 });
 
 test('verify all footers exist on the page test', async({basePage}) => {
@@ -25,11 +25,11 @@ test('log out link exist test with fixtures', async({homePage}) => {
 });
 
 test('@regression  Home Page Headers test with fixtures', async({homePage}) => {
-let allHeaders = await homePage.getHomePageHeaders();
-console.log('home page headers: ', allHeaders);
-expect.soft(allHeaders).toHaveLength(4);
-expect.soft(allHeaders).toEqual([
-    'My Account', 'My Orders', 'My Affiliate Account', 'Newsletter'
-])
+    let allHeaders = await homePage.getHomePageHeaders();
+    console.log('home page headers: ', allHeaders);
+    expect.soft(allHeaders).toHaveLength(4);
+    expect.soft(allHeaders).toEqual([
+        'My Account', 'My Orders', 'My Affiliate Account', 'Newsletter'
+    ])
 });
 
