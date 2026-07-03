@@ -130,10 +130,12 @@ pipeline {
                 }
             }
             post {
-                always {
-                    bat 'mkdir -p reports-dev/html reports-dev/allure'
-                    bat 'cp -r qa-tests/reports/html-report/* reports-dev/html/ || true'
-                    bat 'allure generate qa-tests/allure-results --clean -o reports-dev/allure || true'
+                always {                    
+                    bat 'if not exist reports-dev\\html mkdir reports-dev\\html'
+                    bat 'if not exist reports-dev\\allure mkdir reports-dev\\allure'              
+                    bat 'xcopy /E /Y qa-tests\\reports\\html-report\\* reports-dev\\html\\'
+                    bat 'allure generate qa-tests/allure-results --clean -o reports-dev/allure & exit 0'
+
                     publishHTML(target: [
                         reportName: 'DEV Sanity - PW HTML Report',
                         reportDir: 'reports-dev/html',
@@ -198,9 +200,10 @@ pipeline {
             }
             post {
                 always {
-                    bat 'mkdir -p reports-qa/html reports-qa/allure'
-                    bat 'cp -r qa-tests/reports/html-report/* reports-qa/html/ || true'
-                    bat 'allure generate qa-tests/allure-results --clean -o reports-qa/allure || true'
+                    bat 'if not exist reports-dev\\html mkdir reports-dev\\html'
+                    bat 'if not exist reports-dev\\allure mkdir reports-dev\\allure'              
+                    bat 'xcopy /E /Y qa-tests\\reports\\html-report\\* reports-dev\\html\\'
+                    bat 'allure generate qa-tests/allure-results --clean -o reports-dev/allure & exit 0'
                     publishHTML(target: [
                         reportName: 'QA Regression - PW HTML Report',
                         reportDir: 'reports-qa/html',
@@ -265,9 +268,11 @@ pipeline {
             }
             post {
                 always {
-                    bat 'mkdir -p reports-uat/html reports-uat/allure'
-                    bat 'cp -r qa-tests/reports/html-report/* reports-uat/html/ || true'
-                    bat 'allure generate qa-tests/allure-results --clean -o reports-uat/allure || true'
+                    bat 'if not exist reports-dev\\html mkdir reports-dev\\html'
+                    bat 'if not exist reports-dev\\allure mkdir reports-dev\\allure'              
+                    bat 'xcopy /E /Y qa-tests\\reports\\html-report\\* reports-dev\\html\\'
+                    bat 'allure generate qa-tests/allure-results --clean -o reports-dev/allure & exit 0'
+
                     publishHTML(target: [
                         reportName: 'UAT Sanity - PW HTML Report',
                         reportDir: 'reports-uat/html',
@@ -340,9 +345,10 @@ pipeline {
             }
             post {
                 always {
-                    bat 'mkdir -p reports-prod/html reports-prod/allure'
-                    bat 'cp -r qa-tests/reports/html-report/* reports-prod/html/ || true'
-                    bat 'allure generate qa-tests/allure-results --clean -o reports-prod/allure || true'
+                    bat 'if not exist reports-dev\\html mkdir reports-dev\\html'
+                    bat 'if not exist reports-dev\\allure mkdir reports-dev\\allure'              
+                    bat 'xcopy /E /Y qa-tests\\reports\\html-report\\* reports-dev\\html\\'
+                    bat 'allure generate qa-tests/allure-results --clean -o reports-dev/allure & exit 0'
                     publishHTML(target: [
                         reportName: 'PROD Smoke - PW HTML Report',
                         reportDir: 'reports-prod/html',
