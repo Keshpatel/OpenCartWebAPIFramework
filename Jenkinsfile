@@ -101,7 +101,10 @@ pipeline {
                 echo "  Running SANITY @sanity on DEV"
                 echo "========================================="
                 dir('qa-tests') {
-                    bat 'rm -rf allure-results reports'
+                    // Cleans old results safely on Windows
+                    bat 'if exist allure-results rd /s /q allure-results'
+                    bat 'if exist reports rd /s /q reports'
+                    
                     withCredentials([
                         usernamePassword(credentialsId: 'dev-credentials',
                             usernameVariable: 'APP_USERNAME', passwordVariable: 'APP_PASSWORD'),
@@ -167,7 +170,8 @@ pipeline {
                 echo "  Running REGRESSION (all tests) on QA"
                 echo "========================================="
                 dir('qa-tests') {
-                    bat 'rm -rf allure-results reports'
+                    bat 'bat 'if exist allure-results rd /s /q allure-results'
+bat 'if exist reports rd /s /q reports''
                     withCredentials([
                         usernamePassword(credentialsId: 'qa-credentials',
                             usernameVariable: 'APP_USERNAME', passwordVariable: 'APP_PASSWORD'),
@@ -233,7 +237,8 @@ pipeline {
                 echo "  Running SANITY @sanity on UAT"
                 echo "========================================="
                 dir('qa-tests') {
-                    bat 'rm -rf allure-results reports'
+                    bat 'bat 'if exist allure-results rd /s /q allure-results'
+bat 'if exist reports rd /s /q reports''
                     withCredentials([
                         usernamePassword(credentialsId: 'uat-credentials',
                             usernameVariable: 'APP_USERNAME', passwordVariable: 'APP_PASSWORD'),
@@ -307,7 +312,8 @@ pipeline {
                 echo "  Running SANITY @sanity on PROD"
                 echo "========================================="
                 dir('qa-tests') {
-                    bat 'rm -rf allure-results reports'
+                    bat 'bat 'if exist allure-results rd /s /q allure-results'
+bat 'if exist reports rd /s /q reports''
                     withCredentials([
                         usernamePassword(credentialsId: 'prod-credentials',
                             usernameVariable: 'APP_USERNAME', passwordVariable: 'APP_PASSWORD'),
