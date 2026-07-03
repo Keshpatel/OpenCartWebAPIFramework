@@ -115,16 +115,16 @@ pipeline {
                         string(credentialsId: 'api-base-url', variable: 'API_BASE_URL')
                     ]) {
                         bat '''
-                            ENV=dev \
-                            BASE_URL=$BASE_URL \
-                            APP_USERNAME=$APP_USERNAME \
-                            APP_PASSWORD=$APP_PASSWORD \
-                            API_BASE_URL=$API_BASE_URL \
-                            API_TOKEN=$API_TOKEN \
-                            OAUTH_CLIENT_ID=$OAUTH_CLIENT_ID \
-                            OAUTH_CLIENT_SECRET=$OAUTH_CLIENT_SECRET \
-                            GRANT_TYPE=client_credentials \
-                            npx playwright test --project=chromium --grep @sanity
+                            set ENV=dev
+                            set BASE_URL=%BASE_URL%
+                            set APP_USERNAME=%APP_USERNAME%
+                            set APP_PASSWORD=%APP_PASSWORD%
+                            set API_BASE_URL=%API_BASE_URL%
+                            set API_TOKEN=%API_TOKEN%
+                            set OAUTH_CLIENT_ID=%OAUTH_CLIENT_ID%
+                            set OAUTH_CLIENT_SECRET=%OAUTH_CLIENT_SECRET%
+                            set GRANT_TYPE=client_credentials
+                            cmd /c npx playwright test --project=chromium --grep @sanity
                         '''
                     }
                 }
@@ -184,16 +184,16 @@ pipeline {
                         string(credentialsId: 'api-base-url', variable: 'API_BASE_URL')
                     ]) {
                         bat '''
-                            ENV=qa \
-                            BASE_URL=$BASE_URL \
-                            APP_USERNAME=$APP_USERNAME \
-                            APP_PASSWORD=$APP_PASSWORD \
-                            API_BASE_URL=$API_BASE_URL \
-                            API_TOKEN=$API_TOKEN \
-                            OAUTH_CLIENT_ID=$OAUTH_CLIENT_ID \
-                            OAUTH_CLIENT_SECRET=$OAUTH_CLIENT_SECRET \
-                            GRANT_TYPE=client_credentials \
-                            npx playwright test --project=chromium
+                            set ENV=qa
+                            set BASE_URL=%BASE_URL%
+                            set APP_USERNAME=%APP_USERNAME%
+                            set APP_PASSWORD=%APP_PASSWORD%
+                            set API_BASE_URL=%API_BASE_URL%
+                            set API_TOKEN=%API_TOKEN%
+                            set OAUTH_CLIENT_ID=%OAUTH_CLIENT_ID%
+                            set OAUTH_CLIENT_SECRET=%OAUTH_CLIENT_SECRET%
+                            set GRANT_TYPE=client_credentials
+                            cmd /c npx playwright test --project=chromium
                         '''
                     }
                 }
@@ -253,16 +253,16 @@ pipeline {
                         string(credentialsId: 'api-base-url', variable: 'API_BASE_URL')
                     ]) {
                         bat '''
-                            ENV=uat \
-                            BASE_URL=$BASE_URL \
-                            APP_USERNAME=$APP_USERNAME \
-                            APP_PASSWORD=$APP_PASSWORD \
-                            API_BASE_URL=$API_BASE_URL \
-                            API_TOKEN=$API_TOKEN \
-                            OAUTH_CLIENT_ID=$OAUTH_CLIENT_ID \
-                            OAUTH_CLIENT_SECRET=$OAUTH_CLIENT_SECRET \
-                            GRANT_TYPE=client_credentials \
-                            npx playwright test --project=chromium --grep @sanity
+                            set ENV=uat
+                            set BASE_URL=%BASE_URL%
+                            set APP_USERNAME=%APP_USERNAME%
+                            set APP_PASSWORD=%APP_PASSWORD%
+                            set API_BASE_URL=%API_BASE_URL%
+                            set API_TOKEN=%API_TOKEN%
+                            set OAUTH_CLIENT_ID=%OAUTH_CLIENT_ID%
+                            set OAUTH_CLIENT_SECRET=%OAUTH_CLIENT_SECRET%
+                            set GRANT_TYPE=client_credentials
+                            cmd /c npx playwright test --project=chromium --grep @sanity
                         '''
                     }
                 }
@@ -331,16 +331,16 @@ pipeline {
                         string(credentialsId: 'api-base-url', variable: 'API_BASE_URL')
                     ]) {
                         bat '''
-                            ENV=prod \
-                            BASE_URL=$BASE_URL \
-                            APP_USERNAME=$APP_USERNAME \
-                            APP_PASSWORD=$APP_PASSWORD \
-                            API_BASE_URL=$API_BASE_URL \
-                            API_TOKEN=$API_TOKEN \
-                            OAUTH_CLIENT_ID=$OAUTH_CLIENT_ID \
-                            OAUTH_CLIENT_SECRET=$OAUTH_CLIENT_SECRET \
-                            GRANT_TYPE=client_credentials \
-                            npx playwright test --project=chromium --grep @sanity
+                            set ENV=prod \
+                            set BASE_URL=$BASE_URL \
+                            set APP_USERNAME=$APP_USERNAME \
+                            set APP_PASSWORD=$APP_PASSWORD \
+                            set API_BASE_URL=$API_BASE_URL \
+                            set API_TOKEN=$API_TOKEN \
+                            set OAUTH_CLIENT_ID=$OAUTH_CLIENT_ID \
+                            set OAUTH_CLIENT_SECRET=$OAUTH_CLIENT_SECRET \
+                            set GRANT_TYPE=client_credentials \
+                            cmd /c npx playwright test --project=chromium --grep @sanity
                         '''
                     }
                 }
