@@ -43,7 +43,7 @@ test('@regression Verify shopping cart product information test ', async ({ home
 
 
 const shoppingCartData = CsvHelper.readCsv('src/data/ShoppingCartProducts.csv');
-test('Verify shopping cart product information test', async ({homePage, searchResultsPage, productDetailsPage, cartPage}) => {
+test('Product information test Using CSV test ', async ({homePage, searchResultsPage, productDetailsPage, cartPage}) => {
 
     for (const row of shoppingCartData) {
         await homePage.goToHomePage();
