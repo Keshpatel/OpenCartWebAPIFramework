@@ -1,0 +1,7 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","40256","@sanity invalid login test with -invalid@open.com - wrongPassword123","chromium","2026-07-04","broken","2026-07-04","","loginpagefixture.spec.ts","",""
+"","43350","@sanity verify logo and footer on product page test","chromium","2026-07-04","broken","2026-07-04","","loginpagefixture.spec.ts","",""
+"","42975","@sanity invalid login test with - - pw1234","chromium","2026-07-04","broken","2026-07-04","","loginpagefixture.spec.ts","",""
+"","43256","@sanityverify all footers exist on the page test","chromium","2026-07-04","broken","2026-07-04","","loginpagefixture.spec.ts","",""
+"","43372","@sanity Login Page with fixture test","chromium","2026-07-04","broken","2026-07-04","","loginpagefixture.spec.ts","",""
+"","43249","@sanity Home Page title test with fixtures","chromium","2026-07-04","broken","2026-07-04","","homepagefix.spec.ts","",""
