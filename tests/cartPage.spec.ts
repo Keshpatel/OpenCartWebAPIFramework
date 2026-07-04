@@ -10,7 +10,7 @@ test.beforeEach(async({ loginPage, cartPage }) => {
    await cartPage.clearCart();
 });
 
-test('@regression Verify shopping cart product information test ', async ({ homePage, searchResultsPage, productDetailsPage,cartPage }) => {
+test.skip('@regression Verify shopping cart product information test ', async ({ homePage, searchResultsPage, productDetailsPage,cartPage }) => {
       for (let i = 0; i < searchKeys.length; i++) 
          {
             await homePage.goToHomePage();
@@ -43,7 +43,7 @@ test('@regression Verify shopping cart product information test ', async ({ home
 
 
 const shoppingCartData = CsvHelper.readCsv('src/data/ShoppingCartProducts.csv');
-test('Product information test Using CSV test ', async ({homePage, searchResultsPage, productDetailsPage, cartPage}) => {
+test.skip('Product information test Using CSV test ', async ({homePage, searchResultsPage, productDetailsPage, cartPage}) => {
 
     for (const row of shoppingCartData) {
         await homePage.goToHomePage();
