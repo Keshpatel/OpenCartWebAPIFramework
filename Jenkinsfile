@@ -350,7 +350,7 @@ pipeline {
                      bat '''
                         if not exist reports-prod\\html mkdir reports-prod\\html
                         if not exist reports-prod\\allure mkdir reports-prod\\allure
-                        if exist qa-tests\\reports\\html-report xcopy /E /I /Y qa-tests\\reports\\html-report\\* reports-prod\\html\
+                        if exist qa-tests\\reports\\html-report xcopy /E /I /Y qa-tests\\reports\\html-report\\* reports-prod\\html\\
                         if exist qa-tests\\allure-results (allure generate qa-tests\\allure-results --clean -o reports-prod\\allure)
                     '''
 
