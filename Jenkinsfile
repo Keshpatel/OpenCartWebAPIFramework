@@ -212,7 +212,6 @@ pipeline {
                     }
                 }
             }
-        }
             post {
                 always {
                         bat 'if not exist reports-qa\\html mkdir reports-qa\\html'
@@ -242,7 +241,7 @@ pipeline {
                         ])
                     }
                 }
-
+        }
         // ═════════════════════════════════════════════════
         // STAGE 5: DEPLOY UAT + SANITY
         // ═════════════════════════════════════════════════
