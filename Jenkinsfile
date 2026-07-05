@@ -269,10 +269,10 @@ pipeline {
             }
             post {
                 always {
-                    bat 'if not exist reports-stage\\html mkdir reports-stage\\html'
-                    bat 'if not exist reports-stage\\allure mkdir reports-stage\\allure'  
-                    bat 'if exist qa-tests\\reports\\html-report xcopy /E /Y qa-tests\\reports\\html-report\\* reports-stage\\html\\'               
-                    bat 'if exist qa-tests\\allure-results allure generate qa-tests/allure-results --clean -o reports-stage/allure & exit 0'
+                    bat 'if not exist reports-uat\\html mkdir reports-uat\\html'
+                    bat 'if not exist reports-uat\\allure mkdir reports-uat\\allure'  
+                    bat 'if exist qa-tests\\reports\\html-report xcopy /E /Y qa-tests\\reports\\html-report\\* reports-uat\\html\\'               
+                    bat 'if exist qa-tests\\allure-results allure generate qa-tests/allure-results --clean -o reports-uat/allure & exit 0'
 
 
                     publishHTML(target: [
