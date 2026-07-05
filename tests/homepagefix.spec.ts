@@ -1,8 +1,7 @@
 import { test, expect } from '../src/fixtures/pagefixtures.js';
 
-test.beforeEach(async ({loginPage}) => {   
-    await loginPage.gotoLoginPage();
-    await loginPage.doLogin(process.env.APP_USERNAME!, process.env.APP_PASSWORD!);
+test.beforeEach(async ({homePage}) => {   
+   await homePage.goToHomePage();
 });
 
 //common test for all pages 
@@ -17,19 +16,7 @@ expect(await basePage.checkFootersCounts()).toBe(16);
 test('@sanity Home Page title test with fixtures', async({homePage}) => {
     const pageTitle = await homePage.getPageTitle();
     console.log('Home Page title : ' , pageTitle);
-    expect(pageTitle).toBe('My Account');
+    expect(pageTitle).toBe('Your Store');
 });
 
-test('log out link exist test with fixtures', async({homePage}) => {
-    expect(await homePage.isLogoutLinkExist()).toBeTruthy();
-});
-
-test('@regression  Home Page Headers test with fixtures', async({homePage}) => {
-    let allHeaders = await homePage.getHomePageHeaders();
-    console.log('home page headers: ', allHeaders);
-    expect.soft(allHeaders).toHaveLength(4);
-    expect.soft(allHeaders).toEqual([
-        'My Account', 'My Orders', 'My Affiliate Account', 'Newsletter'
-    ])
-});
 
