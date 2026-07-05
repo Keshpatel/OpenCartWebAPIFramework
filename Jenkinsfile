@@ -130,12 +130,24 @@ pipeline {
                 }
             }
             post {
-                always {                    
-                    bat 'if not exist reports-dev\\html mkdir reports-dev\\html'
-                    bat 'if not exist reports-dev\\allure mkdir reports-dev\\allure'  
-                    bat 'if exist qa-tests\\reports\\html-report xcopy /E /Y qa-tests\\reports\\html-report\\* reports-dev\\html\\'           
-                    bat 'if exist qa-tests\\allure-results allure generate qa-tests/allure-results --clean -o reports-dev/allure & exit 0'
+                 always {
 
+                    // Create report directories
+                        bat 'if not exist reports-dev\\html mkdir reports-dev\\html'
+                        bat 'if not exist reports-dev\\allure mkdir reports-dev\\allure'
+
+                    // Copy Playwright HTML Report
+                    bat 'if exist reports\\html-report xcopy /E /I /Y reports\\html-report\\* reports-dev\\html\\'
+
+                      // Generate Allure Report
+                    bat 'if exist allure-results allure generate allure-results --clean -o reports-dev\\allure'
+
+                    // Optional - Debug (remove once everything works)
+                    bat 'dir /S reports'
+                    bat 'dir /S allure-results'
+                    bat 'dir /S reports-dev'
+
+                  // Publish Playwright HTML Report
                     publishHTML(target: [
                         reportName: 'DEV Sanity - PW HTML Report',
                         reportDir: 'reports-dev/html',
@@ -143,6 +155,8 @@ pipeline {
                         keepAll: true,
                         alwaysLinkToLastBuild: true
                     ])
+
+                     // Publish Allure Report
                     publishHTML(target: [
                         reportName: 'DEV Sanity - Allure Report',
                         reportDir: 'reports-dev/allure',
@@ -200,28 +214,33 @@ pipeline {
             }
             post {
                 always {
-                    bat 'if not exist reports-qa\\html mkdir reports-qa\\html'
-                    bat 'if not exist reports-qa\\allure mkdir reports-qa\\allure'  
-                    bat 'if exist qa-tests\\reports\\html-report xcopy /E /Y qa-tests\\reports\\html-report\\* reports-qa\\html\\'           
-                    bat 'if exist qa-tests\\allure-results allure generate qa-tests/allure-results --clean -o reports-qa/allure & exit 0'
+                        bat 'if not exist reports-qa\\html mkdir reports-qa\\html'
+                        bat 'if not exist reports-qa\\allure mkdir reports-qa\\allure'
 
-                    publishHTML(target: [
-                        reportName: 'QA Regression - PW HTML Report',
-                        reportDir: 'reports-qa/html',
-                        reportFiles: 'index.html',
-                        keepAll: true,
-                        alwaysLinkToLastBuild: true
-                    ])
-                    publishHTML(target: [
-                        reportName: 'QA Regression - Allure Report',
-                        reportDir: 'reports-qa/allure',
-                        reportFiles: 'index.html',
-                        keepAll: true,
-                        alwaysLinkToLastBuild: true
-                    ])
+                        bat 'if exist reports\\html-report xcopy /E /I /Y reports\\html-report\\* reports-qa\\html\\'
+                        bat 'if exist allure-results allure generate allure-results --clean -o reports-qa\\allure'
+
+                        bat 'dir reports\\html-report'
+                        bat 'dir reports-qa\\html'
+                        bat 'dir reports-qa\\allure'
+
+                        publishHTML(target: [
+                            reportName: 'QA Regression - PW HTML Report',
+                            reportDir: 'reports-qa/html',
+                            reportFiles: 'index.html',
+                            keepAll: true,
+                            alwaysLinkToLastBuild: true
+                        ])
+
+                        publishHTML(target: [
+                            reportName: 'QA Regression - Allure Report',
+                            reportDir: 'reports-qa/allure',
+                            reportFiles: 'index.html',
+                            keepAll: true,
+                            alwaysLinkToLastBuild: true
+                        ])
+                    }
                 }
-            }
-        }
 
         // ═════════════════════════════════════════════════
         // STAGE 5: DEPLOY UAT + SANITY
@@ -267,13 +286,17 @@ pipeline {
                     }
                 }
             }
-            post {
+           post {
                 always {
                     bat 'if not exist reports-uat\\html mkdir reports-uat\\html'
-                    bat 'if not exist reports-uat\\allure mkdir reports-uat\\allure'  
-                    bat 'if exist qa-tests\\reports\\html-report xcopy /E /Y qa-tests\\reports\\html-report\\* reports-uat\\html\\'               
-                    bat 'if exist qa-tests\\allure-results allure generate qa-tests/allure-results --clean -o reports-uat/allure & exit 0'
+                    bat 'if not exist reports-uat\\allure mkdir reports-uat\\allure'
 
+                    bat 'if exist reports\\html-report xcopy /E /I /Y reports\\html-report\\* reports-uat\\html\\'
+                    bat 'if exist allure-results allure generate allure-results --clean -o reports-uat\\allure'
+
+                    bat 'dir reports\\html-report'
+                    bat 'dir reports-uat\\html'
+                    bat 'dir reports-uat\\allure'
 
                     publishHTML(target: [
                         reportName: 'UAT Sanity - PW HTML Report',
@@ -282,6 +305,7 @@ pipeline {
                         keepAll: true,
                         alwaysLinkToLastBuild: true
                     ])
+
                     publishHTML(target: [
                         reportName: 'UAT Sanity - Allure Report',
                         reportDir: 'reports-uat/allure',
@@ -331,17 +355,18 @@ pipeline {
                         string(credentialsId: 'api-base-url', variable: 'API_BASE_URL')
                     ]) {
                         bat '''
-                            set ENV=prod \
-                            set BASE_URL=$BASE_URL \
-                            set APP_USERNAME=$APP_USERNAME \
-                            set APP_PASSWORD=$APP_PASSWORD \
-                            set API_BASE_URL=$API_BASE_URL \
-                            set API_TOKEN=$API_TOKEN \
-                            set OAUTH_CLIENT_ID=$OAUTH_CLIENT_ID \
-                            set OAUTH_CLIENT_SECRET=$OAUTH_CLIENT_SECRET \
-                            set GRANT_TYPE=client_credentials \
+                            set ENV=prod
+                            set BASE_URL=%BASE_URL%
+                            set APP_USERNAME=%APP_USERNAME%
+                            set APP_PASSWORD=%APP_PASSWORD%
+                            set API_BASE_URL=%API_BASE_URL%
+                            set API_TOKEN=%API_TOKEN%
+                            set OAUTH_CLIENT_ID=%OAUTH_CLIENT_ID%
+                            set OAUTH_CLIENT_SECRET=%OAUTH_CLIENT_SECRET%
+                            set GRANT_TYPE=client_credentials
                             cmd /c npx playwright test --project=chromium --grep @sanity
                         '''
+                       
                     }
                 }
             }
@@ -349,9 +374,14 @@ pipeline {
                 always {
                     bat 'if not exist reports-prod\\html mkdir reports-prod\\html'
                     bat 'if not exist reports-prod\\allure mkdir reports-prod\\allure'
-                    bat 'if exist qa-tests\\reports\\html-report xcopy /E /Y qa-tests\\reports\\html-report\\* reports-prod\\html\\'
-                    bat 'if exist qa-tests\\allure-results allure generate qa-tests\\allure-results --clean -o reports-prod\\allure'
-                    bat 'dir /S reports-prod'
+
+                    bat 'if exist reports\\html-report xcopy /E /I /Y reports\\html-report\\* reports-prod\\html\\'
+                    bat 'if exist allure-results allure generate allure-results --clean -o reports-prod\\allure'
+
+                    bat 'dir reports\\html-report'
+                    bat 'dir reports-prod\\html'
+                    bat 'dir reports-prod\\allure'
+
                     publishHTML(target: [
                         reportName: 'PROD Smoke - PW HTML Report',
                         reportDir: 'reports-prod/html',
@@ -359,6 +389,7 @@ pipeline {
                         keepAll: true,
                         alwaysLinkToLastBuild: true
                     ])
+
                     publishHTML(target: [
                         reportName: 'PROD Smoke - Allure Report',
                         reportDir: 'reports-prod/allure',
