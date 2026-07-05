@@ -1,0 +1,15 @@
+==================================
+ENV = QA
+BASE_URL = https://naveenautomationlabs.com
+==================================
+user login info: kdpatel8184@gmail.com : !moonLight2026!
+Search Key is imac
+Product Details Are : Map(7) {
+  'Product Header' => 'iMac',
+  'Product Images' => 3,
+  'Brand' => 'Apple',
+  'Product Code' => 'Product 14',
+  'Availability' => 'Out Of Stock',
+  'Product Price' => '$122.00',
+  'External Text Price' => '$100.00'
+}

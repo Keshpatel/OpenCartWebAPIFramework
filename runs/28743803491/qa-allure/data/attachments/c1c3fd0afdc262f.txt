@@ -1,0 +1,4 @@
+Fake Jason Response :  [
+  { name: 'Fake macbook Pro ', price: '$1000' },
+  { name: 'Fake iphone 20', price: '$500' }
+]

@@ -1,0 +1,6 @@
+==================================
+ENV = UAT
+BASE_URL = https://naveenautomationlabs.com
+==================================
+user login info: tom_smith@3dTechnode.ca : !Spring123
+Home Page title :  My Account

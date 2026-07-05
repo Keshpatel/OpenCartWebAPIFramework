@@ -1,0 +1,74 @@
+[
+  {
+    id: 8537270,
+    name: 'schema test',
+    email: 'automation_1783261367276@newOpen.com',
+    gender: 'female',
+    status: 'active'
+  },
+  {
+    id: 8536467,
+    name: 'Kkk API Updated01',
+    email: 'apiAutomation1783176032780@autoTest.com',
+    gender: 'female',
+    status: 'inactive'
+  },
+  {
+    id: 8536465,
+    name: 'Keshini API',
+    email: 'apiAutomation1783176032443@autoTest.com',
+    gender: 'female',
+    status: 'active'
+  },
+  {
+    id: 8536464,
+    name: 'schema test',
+    email: 'automation_1783176029528@newOpen.com',
+    gender: 'female',
+    status: 'active'
+  },
+  {
+    id: 8536460,
+    name: 'Kkk API Updated01',
+    email: 'apiAutomation1783175661827@autoTest.com',
+    gender: 'female',
+    status: 'inactive'
+  },
+  {
+    id: 8536459,
+    name: 'Keshini API',
+    email: 'apiAutomation1783175661550@autoTest.com',
+    gender: 'female',
+    status: 'active'
+  },
+  {
+    id: 8536457,
+    name: 'schema test',
+    email: 'automation_1783175658456@newOpen.com',
+    gender: 'female',
+    status: 'active'
+  },
+  {
+    id: 8536448,
+    name: 'Kkk API Updated01',
+    email: 'apiAutomation1783174890821@autoTest.com',
+    gender: 'female',
+    status: 'inactive'
+  },
+  {
+    id: 8536450,
+    name: 'Keshini API',
+    email: 'apiAutomation1783174890751@autoTest.com',
+    gender: 'female',
+    status: 'active'
+  },
+  {
+    id: 8536446,
+    name: 'schema test',
+    email: 'automation_1783174889435@newOpen.com',
+    gender: 'female',
+    status: 'active'
+  }
+]
+200
+OK

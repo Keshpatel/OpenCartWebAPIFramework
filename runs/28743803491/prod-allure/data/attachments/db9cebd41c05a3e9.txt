@@ -1,0 +1,5 @@
+==================================
+ENV = PROD
+BASE_URL = https://naveenautomationlabs.com
+==================================
+user login info: invalid@open.com : wrongPassword123
