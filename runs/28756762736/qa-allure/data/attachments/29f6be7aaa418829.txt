@@ -1,0 +1,4 @@
+==================================
+ENV = QA
+BASE_URL = https://naveenautomationlabs.com
+==================================
