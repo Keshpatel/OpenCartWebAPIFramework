@@ -351,7 +351,7 @@ pipeline {
                     bat 'if not exist reports-prod\\allure mkdir reports-prod\\allure'
                     bat 'if exist qa-tests\\reports\\html-report xcopy /E /I /Y qa-tests\\reports\\html-report\\* reports-prod\\html\\'
                     bat 'if exist qa-tests\\allure-results (allure generate qa-tests\\allure-results --clean -o reports-prod\\allure)'
-                    
+                    bat 'dir /S reports-prod'
                     publishHTML(target: [
                         reportName: 'PROD Smoke - PW HTML Report',
                         reportDir: 'reports-prod/html',
