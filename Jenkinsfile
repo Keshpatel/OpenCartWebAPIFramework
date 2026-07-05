@@ -212,6 +212,7 @@ pipeline {
                     }
                 }
             }
+        }
             post {
                 always {
                         bat 'if not exist reports-qa\\html mkdir reports-qa\\html'
