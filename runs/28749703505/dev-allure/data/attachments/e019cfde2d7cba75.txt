@@ -1,0 +1,4 @@
+==================================
+ENV = DEV
+BASE_URL = https://naveenautomationlabs.com
+==================================
