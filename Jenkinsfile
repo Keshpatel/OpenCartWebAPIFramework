@@ -375,36 +375,12 @@ pipeline {
                 }
             }
         }
-    }
+    } 
 
     post {
 
         always {
-
-            script {
-
-                def buildStatus = currentBuild.currentResult
-                def statusColor = buildStatus == 'SUCCESS' ? 'good' : 'danger'
-                def statusEmoji = buildStatus == 'SUCCESS' ? '✅' : '❌'
-
-                slackSend(
-                    channel: env.SLACK_CHANNEL,
-                    color: statusColor,
-                    message: """
-                            🎭 *Playwright CI/CD Pipeline*
-
-                                *Status:* ${statusEmoji} ${buildStatus}
-                                *Environment:* ${params.ENVIRONMENT}
-                                *Browser:* ${params.BROWSER}
-                                *Suite:* ${params.TEST_SUITE}
-                                *Branch:* ${env.BRANCH_NAME ?: 'master'}
-                                *Build:* #${env.BUILD_NUMBER}
-                                *Duration:* ${currentBuild.durationString.replace(' and counting','')}
-
-                                📊 ${env.BUILD_URL}
-                    """
-                )
-            }
+             echo 'Pipeline finished.'
         }
 
         success {
@@ -412,7 +388,7 @@ pipeline {
         }
 
         failure {
-            echo 'Pipeline failed.'
+             echo 'Pipeline failed.'
         }
 
         cleanup {
