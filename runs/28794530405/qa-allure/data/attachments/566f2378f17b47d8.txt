@@ -1,0 +1,6 @@
+==================================
+ENV = QA
+BASE_URL = https://naveenautomationlabs.com
+==================================
+user login info: kdpatel8184@gmail.com : !moonLight2026!
+Search Key is imac
