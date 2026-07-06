@@ -41,32 +41,6 @@ pipeline {
 
     stages {
 
-        stage('Build & Unit Tests') {
-            steps {
-
-                echo "Building Maven Project..."
-
-                dir('dev-app') {
-
-                    git(
-                        url: 'https://github.com/jglick/simple-maven-project-with-tests.git',
-                        branch: 'master'
-                    )
-
-                    bat 'mvn clean install -Dmaven.test.failure.ignore=true'
-                }
-            }
-
-            post {
-                always {
-                    junit(
-                        testResults: 'dev-app/target/surefire-reports/*.xml',
-                        allowEmptyResults: true
-                    )
-                }
-            }
-        }
-
         stage('Install Dependencies') {
             steps {
 
@@ -92,7 +66,6 @@ pipeline {
 
         stage('DEV - Sanity Tests') {
             steps {
-
                 bat 'if exist allure-results rd /s /q allure-results'
                 bat 'if exist reports rd /s /q reports'
 
