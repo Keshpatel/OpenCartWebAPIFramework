@@ -44,7 +44,6 @@ pipeline {
     }
 
     stages {
-
         // ═════════════════════════════════════════════════
         // STAGE 1: BUILD APP + UNIT TESTS
         // ═════════════════════════════════════════════════
@@ -53,12 +52,10 @@ pipeline {
                 echo "========================================="
                 echo "  Building App + Running Unit Tests"
                 echo "========================================="
-                dir('dev-app') {
                     git url: 'https://github.com/jglick/simple-maven-project-with-tests.git',
                         branch: 'master'
                     bat 'mvn clean install -Dmaven.test.failure.ignore=true'
                 }
-            }
             post {
                 always {
                     junit 'dev-app/target/surefire-reports/*.xml'
@@ -74,12 +71,11 @@ pipeline {
                 echo "========================================="
                 echo "  Installing Playwright Dependencies"
                 echo "========================================="
-                dir('qa-tests') {
                     git url: 'https://github.com/Keshpatel/OpenCartWebAPIFramework.git',
                         branch: 'master'
                     bat 'npm ci'
                     bat 'npx playwright install --with-deps chromium'
-                }
+                
             }
         }
 
@@ -99,12 +95,10 @@ pipeline {
             steps {
                 echo "========================================="
                 echo "  Running SANITY @sanity on DEV"
-                echo "========================================="
-                dir('qa-tests') {
+                echo "========================================="                
                     // Cleans old results safely on Windows
                     bat 'if exist allure-results rd /s /q allure-results'
-                    bat 'if exist reports rd /s /q reports'
-                    
+                    bat 'if exist reports rd /s /q reports'                    
                     withCredentials([
                         usernamePassword(credentialsId: 'dev-credentials',
                             usernameVariable: 'APP_USERNAME', passwordVariable: 'APP_PASSWORD'),
@@ -128,10 +122,8 @@ pipeline {
                         '''
                     }
                 }
-            }
             post {
                  always {
-
                     // Create report directories
                         bat 'if not exist reports-dev\\html mkdir reports-dev\\html'
                         bat 'if not exist reports-dev\\allure mkdir reports-dev\\allure'
@@ -185,7 +177,6 @@ pipeline {
                 echo "========================================="
                 echo "  Running REGRESSION (all tests) on QA"
                 echo "========================================="
-                dir('qa-tests') {
                     bat 'if exist allure-results rd /s /q allure-results'
                     bat 'if exist reports rd /s /q reports'
                     withCredentials([
@@ -211,7 +202,6 @@ pipeline {
                         '''
                     }
                 }
-            }
             post {
                 always {
                         bat 'if not exist reports-qa\\html mkdir reports-qa\\html'
@@ -259,7 +249,7 @@ pipeline {
                 echo "========================================="
                 echo "  Running SANITY @sanity on UAT"
                 echo "========================================="
-                dir('qa-tests') {
+                
                     bat 'if exist allure-results rd /s /q allure-results'
                     bat 'if exist reports rd /s /q reports'
                     withCredentials([
@@ -284,7 +274,7 @@ pipeline {
                             cmd /c npx playwright test --project=chromium --grep @sanity
                         '''
                     }
-                }
+                
             }
            post {
                 always {
@@ -342,7 +332,6 @@ pipeline {
                 echo "========================================="
                 echo "  Running SANITY @sanity on PROD"
                 echo "========================================="
-                dir('qa-tests') {
                     bat 'if exist allure-results rd /s /q allure-results'
                     bat 'if exist reports rd /s /q reports'
                     withCredentials([
@@ -365,11 +354,9 @@ pipeline {
                             set OAUTH_CLIENT_SECRET=%OAUTH_CLIENT_SECRET%
                             set GRANT_TYPE=client_credentials
                             cmd /c npx playwright test --project=chromium --grep @sanity
-                        '''
-                       
+                        '''                       
                     }
                 }
-            }
             post {
                 always {
                     bat 'if not exist reports-prod\\html mkdir reports-prod\\html'
