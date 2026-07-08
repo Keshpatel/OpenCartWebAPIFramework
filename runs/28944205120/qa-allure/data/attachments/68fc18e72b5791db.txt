@@ -1,0 +1,74 @@
+[
+  {
+    id: 8541309,
+    name: 'schema test',
+    email: 'automation_1783515411797@newOpen.com',
+    gender: 'female',
+    status: 'active'
+  },
+  {
+    id: 8541302,
+    name: 'Kkk API Updated01',
+    email: 'apiAutomation1783515159770@autoTest.com',
+    gender: 'female',
+    status: 'inactive'
+  },
+  {
+    id: 8541299,
+    name: 'Keshini API',
+    email: 'apiAutomation1783515159656@autoTest.com',
+    gender: 'female',
+    status: 'active'
+  },
+  {
+    id: 8541298,
+    name: 'schema test',
+    email: 'automation_1783515154919@newOpen.com',
+    gender: 'female',
+    status: 'active'
+  },
+  {
+    id: 8540933,
+    name: 'Kkk API Updated01',
+    email: 'apiAutomation1783505085521@autoTest.com',
+    gender: 'female',
+    status: 'inactive'
+  },
+  {
+    id: 8540931,
+    name: 'Keshini API',
+    email: 'apiAutomation1783505078999@autoTest.com',
+    gender: 'female',
+    status: 'active'
+  },
+  {
+    id: 8540926,
+    name: 'schema test',
+    email: 'automation_1783505052455@newOpen.com',
+    gender: 'female',
+    status: 'active'
+  },
+  {
+    id: 8540131,
+    name: 'Vimal Menon',
+    email: 'menon_vimal@kertzmann.test',
+    gender: 'female',
+    status: 'inactive'
+  },
+  {
+    id: 8540130,
+    name: 'Brahmaanand Talwar',
+    email: 'talwar_brahmaanand@wolf.example',
+    gender: 'male',
+    status: 'active'
+  },
+  {
+    id: 8540129,
+    name: 'Shashi Mahajan',
+    email: 'mahajan_shashi@bartoletti.test',
+    gender: 'female',
+    status: 'inactive'
+  }
+]
+200
+OK
