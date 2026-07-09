@@ -176,7 +176,8 @@ pipeline {
                         set OAUTH_CLIENT_SECRET=%OAUTH_CLIENT_SECRET%
                         set GRANT_TYPE=client_credentials
 
-                        npx playwright test --project=chromium
+                        npx playwright test --project=%BROWSER%
+
                     '''
                 }
             }
@@ -246,7 +247,7 @@ pipeline {
                         set OAUTH_CLIENT_SECRET=%OAUTH_CLIENT_SECRET%
                         set GRANT_TYPE=client_credentials
 
-                        npx playwright test --project=chromium --grep @sanity
+                        npx playwright test --project=%BROWSER% --grep @sanity
                     '''
                 }
             }
