@@ -58,87 +58,6 @@ pipeline {
             }
         }
 
- // =====================================================
-// DEV Stages
-// Currently excluded from this Jenkins pipeline.
-//
-// In a typical enterprise setup, DEV validation is often
-// handled separately (for example by a CI pipeline or a
-// dedicated development pipeline).
-//
-// Uncomment these stages if DEV deployment and testing
-// are required in this pipeline.
-// =====================================================
-        // stage('Deploy to DEV') {
-        //     steps {
-        //         echo "Deploying to DEV..."
-        //         echo "DEV deployment completed."
-        //     }
-        // }
-
-        // stage('DEV - Sanity Tests') {
-        //     steps {
-        //         bat 'if exist allure-results rd /s /q allure-results'
-        //         bat 'if exist reports rd /s /q reports'
-
-        //         withCredentials([
-        //             usernamePassword(
-        //                 credentialsId: 'dev-credentials',
-        //                 usernameVariable: 'APP_USERNAME',
-        //                 passwordVariable: 'APP_PASSWORD'
-        //             ),
-        //             string(credentialsId: 'api-token', variable: 'API_TOKEN'),
-        //             string(credentialsId: 'oauth-client-id', variable: 'OAUTH_CLIENT_ID'),
-        //             string(credentialsId: 'oauth-client-secret', variable: 'OAUTH_CLIENT_SECRET'),
-        //             string(credentialsId: 'dev-base-url', variable: 'BASE_URL'),
-        //             string(credentialsId: 'api-base-url', variable: 'API_BASE_URL')
-        //         ]) {
-
-        //             bat '''
-        //                 set ENV=dev
-        //                 set BASE_URL=%BASE_URL%
-        //                 set APP_USERNAME=%APP_USERNAME%
-        //                 set APP_PASSWORD=%APP_PASSWORD%
-        //                 set API_BASE_URL=%API_BASE_URL%
-        //                 set API_TOKEN=%API_TOKEN%
-        //                 set OAUTH_CLIENT_ID=%OAUTH_CLIENT_ID%
-        //                 set OAUTH_CLIENT_SECRET=%OAUTH_CLIENT_SECRET%
-        //                 set GRANT_TYPE=client_credentials
-
-        //                 npx playwright test --project=chromium --grep @sanity
-        //             '''
-        //         }
-        //     }
-
-        //     post {
-        //         always {
-
-        //             bat 'if not exist reports-dev\\html mkdir reports-dev\\html'
-        //             bat 'if not exist reports-dev\\allure mkdir reports-dev\\allure'
-
-        //             bat 'if exist reports\\html-report xcopy /E /I /Y reports\\html-report\\* reports-dev\\html\\'
-
-        //             bat 'if exist allure-results allure generate allure-results --clean -o reports-dev\\allure'
-
-        //             publishHTML(target: [
-        //                 reportName: 'DEV - Playwright Report',
-        //                 reportDir: 'reports-dev/html',
-        //                 reportFiles: 'index.html',
-        //                 keepAll: true,
-        //                 alwaysLinkToLastBuild: true
-        //             ])
-
-        //             publishHTML(target: [
-        //                 reportName: 'DEV - Allure Report',
-        //                 reportDir: 'reports-dev/allure',
-        //                 reportFiles: 'index.html',
-        //                 keepAll: true,
-        //                 alwaysLinkToLastBuild: true
-        //             ])
-        //         }
-        //     }
-        // }
-
         stage('Deploy to QA') {
             steps {
                 echo "Deploying to QA..."
@@ -278,108 +197,18 @@ pipeline {
                 }
             }
        }
-        
-   // =====================================================
-// PROD Stages
-// Currently moved to a separate Jenkins Job.
-// Uncomment only if PROD deployment is required
-// in this Jenkinsfile.
-// =====================================================
-
-    //     stage('Approval for PROD') {
-    //         steps {
-    //             input(
-    //                 message: 'Deploy to PROD?',
-    //                 ok: 'Deploy',
-    //                 submitter: 'admin,keshini'
-    //             )
-    //         }
-    //     }
-
-    //     stage('Deploy to PROD') {
-    //         steps {
-    //             echo "Deploying to PROD..."
-    //             echo "PROD deployment completed."
-    //         }
-    //     }
-
-    //     stage('PROD - Smoke Tests') {
-    //         steps {
-
-    //             bat 'if exist allure-results rd /s /q allure-results'
-    //             bat 'if exist reports rd /s /q reports'
-
-    //             withCredentials([
-    //                 usernamePassword(
-    //                     credentialsId: 'prod-credentials',
-    //                     usernameVariable: 'APP_USERNAME',
-    //                     passwordVariable: 'APP_PASSWORD'
-    //                 ),
-    //                 string(credentialsId: 'api-token', variable: 'API_TOKEN'),
-    //                 string(credentialsId: 'oauth-client-id', variable: 'OAUTH_CLIENT_ID'),
-    //                 string(credentialsId: 'oauth-client-secret', variable: 'OAUTH_CLIENT_SECRET'),
-    //                 string(credentialsId: 'prod-base-url', variable: 'BASE_URL'),
-    //                 string(credentialsId: 'api-base-url', variable: 'API_BASE_URL')
-    //             ]) {
-
-    //                 bat '''
-    //                     set ENV=prod
-    //                     set BASE_URL=%BASE_URL%
-    //                     set APP_USERNAME=%APP_USERNAME%
-    //                     set APP_PASSWORD=%APP_PASSWORD%
-    //                     set API_BASE_URL=%API_BASE_URL%
-    //                     set API_TOKEN=%API_TOKEN%
-    //                     set OAUTH_CLIENT_ID=%OAUTH_CLIENT_ID%
-    //                     set OAUTH_CLIENT_SECRET=%OAUTH_CLIENT_SECRET%
-    //                     set GRANT_TYPE=client_credentials
-
-    //                     npx playwright test --project=chromium --grep @sanity
-    //                 '''
-    //             }
-    //         }
-
-    //         post {
-    //             always {
-
-    //                 bat 'if not exist reports-prod\\html mkdir reports-prod\\html'
-    //                 bat 'if not exist reports-prod\\allure mkdir reports-prod\\allure'
-
-    //                 bat 'if exist reports\\html-report xcopy /E /I /Y reports\\html-report\\* reports-prod\\html\\'
-
-    //                 bat 'if exist allure-results allure generate allure-results --clean -o reports-prod\\allure'
-
-    //                 publishHTML(target: [
-    //                     reportName: 'PROD - Playwright Report',
-    //                     reportDir: 'reports-prod/html',
-    //                     reportFiles: 'index.html',
-    //                     keepAll: true,
-    //                     alwaysLinkToLastBuild: true
-    //                 ])
-
-    //                 publishHTML(target: [
-    //                     reportName: 'PROD - Allure Report',
-    //                     reportDir: 'reports-prod/allure',
-    //                     reportFiles: 'index.html',
-    //                     keepAll: true,
-    //                     alwaysLinkToLastBuild: true
-    //                 ])
-    //             }
-    //         }
-    //     }
-    // } 
-
-    post {
-        always {
-            script {
+        post {
+            always {
+                script {
 
                 def buildStatus = currentBuild.currentResult
                 def statusColor = buildStatus == 'SUCCESS' ? 'good' : 'danger'
                 def statusEmoji = buildStatus == 'SUCCESS' ? '✅' : '❌'
 
-                slackSend(
-                    channel: env.SLACK_CHANNEL,
-                    color: statusColor,
-                    message: """
+                    slackSend(
+                      channel: env.SLACK_CHANNEL,
+                      color: statusColor,
+                      message: """
                             🎭 *Playwright CI/CD Pipeline*
 
                                 *Status:* ${statusEmoji} ${buildStatus}
@@ -392,27 +221,27 @@ pipeline {
 
                                 📊 ${env.BUILD_URL}
                     """
-                )
-            }
+                   )
+               }
              echo 'Pipeline finished.'
-        }
-
-        success {
+            }
+            success {
             echo 'Pipeline completed successfully.'
-        }
+            }
 
-        failure {
+            failure {
             echo 'Pipeline failed.'
              echo 'Pipeline failed.'
-        }
+            }
 
-        cleanup {
+            cleanup {
 
             cleanWs(
                 cleanWhenNotBuilt: false,
                 deleteDirs: true,
                 disableDeferredWipeout: true
             )
-        }
-    }
+            }
+       }
+   }
 }
