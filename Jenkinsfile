@@ -253,7 +253,7 @@ pipeline {
             }
         }
 
-            post {
+        post {
                 always {
 
                     bat 'if not exist reports-uat\\html mkdir reports-uat\\html'
@@ -279,7 +279,7 @@ pipeline {
                         alwaysLinkToLastBuild: true
                     ])
                 }
-            }
+        }
     }
         
    // =====================================================
