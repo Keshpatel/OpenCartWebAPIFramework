@@ -1,257 +1,400 @@
-// ═══════════════════════════════════════════════════════════════
-// Jenkinsfile_docker — Master CI/CD Pipeline (Windows + Docker)
-// Playwright TypeScript Framework — Tests run inside Docker
-// Naveen Automation Labs
-// ═══════════════════════════════════════════════════════════════
-
 pipeline {
     agent any
 
     tools {
+        nodejs 'NodeJS-24'
         maven 'Maven-3.9'
         jdk 'JDK21'
+        allure 'Allure'
     }
 
     parameters {
-        choice(name: 'ENVIRONMENT', choices: ['QA', 'dev', 'uat', 'Prod'], description: 'Select environment')
-        choice(name: 'BROWSER', choices: ['chromium', 'firefox', 'webkit'], description: 'Select browser')
-        choice(name: 'TEST_SUITE', choices: ['all', 'sanity', 'regression', 'api-sanity'], description: 'Select test suite')
+        choice(
+            name: 'ENVIRONMENT',
+            choices: ['QA', 'DEV', 'UAT', 'PROD'],
+            description: 'Select Environment'
+        )
+
+        choice(
+            name: 'BROWSER',
+            choices: ['chromium', 'firefox', 'webkit'],
+            description: 'Select Browser'
+        )
+
+        choice(
+            name: 'TEST_SUITE',
+            choices: ['all', 'sanity', 'regression'],
+            description: 'Select Test Suite'
+        )
     }
 
     environment {
         SLACK_CHANNEL = '#all-k3dtech'
-        DOCKER_IMAGE = 'opencart-playwright'
     }
 
     options {
         timeout(time: 30, unit: 'MINUTES')
         timestamps()
-        buildDiscarder(logRotator(numToKeepStr: '20'))
         disableConcurrentBuilds()
+        buildDiscarder(logRotator(numToKeepStr: '20'))
     }
 
     stages {
-        stage('Build Docker Image') {
+
+        stage('Install Dependencies') {
             steps {
-                echo '========================================='
-                echo '  Building Playwright Docker Image'
-                echo '========================================='
-                git url: 'https://github.com/Keshpatel/OpenCartWebAPIFramework.git', branch: 'master'
-                bat "docker build -t %DOCKER_IMAGE% ."
-                bat "docker images | findstr %DOCKER_IMAGE%"
+
+                echo "Installing Playwright Dependencies..."
+
+                git(
+                    url: 'https://github.com/Keshpatel/OpenCartWebAPIFramework.git',
+                    branch: 'master'
+                )
+
+                bat 'npm ci'
+
+                bat 'npx playwright install chromium'
+
             }
         }
-
         stage('Deploy to DEV') {
-            steps { echo 'Deploying to DEV... done' }
+            steps {
+                echo "Deploying to DEV..."
+                echo "DEV deployment completed."
+            }
         }
 
         stage('DEV - Sanity Tests') {
             steps {
-                echo 'Running SANITY @sanity on DEV (Docker)'
-                bat 'if not exist reports-dev\\html mkdir reports-dev\\html'
-                bat 'if not exist allure-results-dev mkdir allure-results-dev'
+                bat 'if exist allure-results rd /s /q allure-results'
+                bat 'if exist reports rd /s /q reports'
+
                 withCredentials([
-                    usernamePassword(credentialsId: 'dev-credentials', usernameVariable: 'APP_USERNAME', passwordVariable: 'APP_PASSWORD'),
+                    usernamePassword(
+                        credentialsId: 'dev-credentials',
+                        usernameVariable: 'APP_USERNAME',
+                        passwordVariable: 'APP_PASSWORD'
+                    ),
                     string(credentialsId: 'api-token', variable: 'API_TOKEN'),
                     string(credentialsId: 'oauth-client-id', variable: 'OAUTH_CLIENT_ID'),
                     string(credentialsId: 'oauth-client-secret', variable: 'OAUTH_CLIENT_SECRET'),
                     string(credentialsId: 'dev-base-url', variable: 'BASE_URL'),
                     string(credentialsId: 'api-base-url', variable: 'API_BASE_URL')
                 ]) {
-                    bat """
-                        docker run --rm ^
-                            -e CI=true ^
-                            -e ENV=dev ^
-                            -e BASE_URL=%BASE_URL% ^
-                            -e APP_USERNAME=%APP_USERNAME% ^
-                            -e APP_PASSWORD=%APP_PASSWORD% ^
-                            -e API_BASE_URL=%API_BASE_URL% ^
-                            -e API_TOKEN=%API_TOKEN% ^
-                            -e OAUTH_CLIENT_ID=%OAUTH_CLIENT_ID% ^
-                            -e OAUTH_CLIENT_SECRET=%OAUTH_CLIENT_SECRET% ^
-                            -e GRANT_TYPE=client_credentials ^
-                            -v "%WORKSPACE%\\reports-dev\\html:/app/reports/html-report" ^
-                            -v "%WORKSPACE%\\allure-results-dev:/app/allure-results" ^
-                            %DOCKER_IMAGE% ^
-                            npx playwright test --project=chromium --grep @sanity
-                    """
+
+                    bat '''
+                        set ENV=dev
+                        set BASE_URL=%BASE_URL%
+                        set APP_USERNAME=%APP_USERNAME%
+                        set APP_PASSWORD=%APP_PASSWORD%
+                        set API_BASE_URL=%API_BASE_URL%
+                        set API_TOKEN=%API_TOKEN%
+                        set OAUTH_CLIENT_ID=%OAUTH_CLIENT_ID%
+                        set OAUTH_CLIENT_SECRET=%OAUTH_CLIENT_SECRET%
+                        set GRANT_TYPE=client_credentials
+
+                        npx playwright test --project=chromium --grep @sanity
+                    '''
                 }
             }
+
             post {
                 always {
+
+                    bat 'if not exist reports-dev\\html mkdir reports-dev\\html'
                     bat 'if not exist reports-dev\\allure mkdir reports-dev\\allure'
-                    bat 'npx allure generate allure-results-dev --clean -o reports-dev\\allure 2>nul || exit /b 0'
-                    publishHTML(target: [reportName: 'DEV Sanity - PW HTML Report', reportDir: 'reports-dev\\html', reportFiles: 'index.html', keepAll: true, alwaysLinkToLastBuild: true])
-                    publishHTML(target: [reportName: 'DEV Sanity - Allure Report', reportDir: 'reports-dev\\allure', reportFiles: 'index.html', keepAll: true, alwaysLinkToLastBuild: true])
+
+                    bat 'if exist reports\\html-report xcopy /E /I /Y reports\\html-report\\* reports-dev\\html\\'
+
+                    bat 'if exist allure-results allure generate allure-results --clean -o reports-dev\\allure'
+
+                    publishHTML(target: [
+                        reportName: 'DEV - Playwright Report',
+                        reportDir: 'reports-dev/html',
+                        reportFiles: 'index.html',
+                        keepAll: true,
+                        alwaysLinkToLastBuild: true
+                    ])
+
+                    publishHTML(target: [
+                        reportName: 'DEV - Allure Report',
+                        reportDir: 'reports-dev/allure',
+                        reportFiles: 'index.html',
+                        keepAll: true,
+                        alwaysLinkToLastBuild: true
+                    ])
                 }
             }
         }
 
         stage('Deploy to QA') {
-            steps { echo 'Deploying to QA... done' }
+            steps {
+                echo "Deploying to QA..."
+                echo "QA deployment completed."
+            }
         }
 
         stage('QA - Regression Tests') {
             steps {
-                echo 'Running REGRESSION on QA (Docker)'
-                bat 'if not exist reports-qa\\html mkdir reports-qa\\html'
-                bat 'if not exist allure-results-qa mkdir allure-results-qa'
+
+                bat 'if exist allure-results rd /s /q allure-results'
+                bat 'if exist reports rd /s /q reports'
+
                 withCredentials([
-                    usernamePassword(credentialsId: 'qa-credentials', usernameVariable: 'APP_USERNAME', passwordVariable: 'APP_PASSWORD'),
+                    usernamePassword(
+                        credentialsId: 'qa-credentials',
+                        usernameVariable: 'APP_USERNAME',
+                        passwordVariable: 'APP_PASSWORD'
+                    ),
                     string(credentialsId: 'api-token', variable: 'API_TOKEN'),
                     string(credentialsId: 'oauth-client-id', variable: 'OAUTH_CLIENT_ID'),
                     string(credentialsId: 'oauth-client-secret', variable: 'OAUTH_CLIENT_SECRET'),
                     string(credentialsId: 'qa-base-url', variable: 'BASE_URL'),
                     string(credentialsId: 'api-base-url', variable: 'API_BASE_URL')
                 ]) {
-                    bat """
-                        docker run --rm ^
-                            -e CI=true ^
-                            -e ENV=qa ^
-                            -e BASE_URL=%BASE_URL% ^
-                            -e APP_USERNAME=%APP_USERNAME% ^
-                            -e APP_PASSWORD=%APP_PASSWORD% ^
-                            -e API_BASE_URL=%API_BASE_URL% ^
-                            -e API_TOKEN=%API_TOKEN% ^
-                            -e OAUTH_CLIENT_ID=%OAUTH_CLIENT_ID% ^
-                            -e OAUTH_CLIENT_SECRET=%OAUTH_CLIENT_SECRET% ^
-                            -e GRANT_TYPE=client_credentials ^
-                            -v "%WORKSPACE%\\reports-qa\\html:/app/reports/html-report" ^
-                            -v "%WORKSPACE%\\allure-results-qa:/app/allure-results" ^
-                            %DOCKER_IMAGE% ^
-                            npx playwright test --project=chromium
-                    """
+
+                    bat '''
+                        set ENV=qa
+                        set BASE_URL=%BASE_URL%
+                        set APP_USERNAME=%APP_USERNAME%
+                        set APP_PASSWORD=%APP_PASSWORD%
+                        set API_BASE_URL=%API_BASE_URL%
+                        set API_TOKEN=%API_TOKEN%
+                        set OAUTH_CLIENT_ID=%OAUTH_CLIENT_ID%
+                        set OAUTH_CLIENT_SECRET=%OAUTH_CLIENT_SECRET%
+                        set GRANT_TYPE=client_credentials
+
+                        npx playwright test --project=chromium
+                    '''
                 }
             }
+
             post {
                 always {
+
+                    bat 'if not exist reports-qa\\html mkdir reports-qa\\html'
                     bat 'if not exist reports-qa\\allure mkdir reports-qa\\allure'
-                    bat 'npx allure generate allure-results-qa --clean -o reports-qa\\allure 2>nul || exit /b 0'
-                    publishHTML(target: [reportName: 'QA Regression - PW HTML Report', reportDir: 'reports-qa\\html', reportFiles: 'index.html', keepAll: true, alwaysLinkToLastBuild: true])
-                    publishHTML(target: [reportName: 'QA Regression - Allure Report', reportDir: 'reports-qa\\allure', reportFiles: 'index.html', keepAll: true, alwaysLinkToLastBuild: true])
+
+                    bat 'if exist reports\\html-report xcopy /E /I /Y reports\\html-report\\* reports-qa\\html\\'
+
+                    bat 'if exist allure-results allure generate allure-results --clean -o reports-qa\\allure'
+
+                    publishHTML(target: [
+                        reportName: 'QA - Playwright Report',
+                        reportDir: 'reports-qa/html',
+                        reportFiles: 'index.html',
+                        keepAll: true,
+                        alwaysLinkToLastBuild: true
+                    ])
+
+                    publishHTML(target: [
+                        reportName: 'QA - Allure Report',
+                        reportDir: 'reports-qa/allure',
+                        reportFiles: 'index.html',
+                        keepAll: true,
+                        alwaysLinkToLastBuild: true
+                    ])
                 }
             }
         }
-
         stage('Deploy to UAT') {
-            steps { echo 'Deploying to UAT... done' }
+            steps {
+                echo "Deploying to UAT..."
+                echo "UAT deployment completed."
+            }
         }
 
         stage('UAT - Sanity Tests') {
             steps {
-                echo 'Running SANITY @sanity on UAT (Docker)'
-                bat 'if not exist reports-uat\\html mkdir reports-uat\\html'
-                bat 'if not exist allure-results-uat mkdir allure-results-uat'
+
+                bat 'if exist allure-results rd /s /q allure-results'
+                bat 'if exist reports rd /s /q reports'
+
                 withCredentials([
-                    usernamePassword(credentialsId: 'uat-credentials', usernameVariable: 'APP_USERNAME', passwordVariable: 'APP_PASSWORD'),
+                    usernamePassword(
+                        credentialsId: 'uat-credentials',
+                        usernameVariable: 'APP_USERNAME',
+                        passwordVariable: 'APP_PASSWORD'
+                    ),
                     string(credentialsId: 'api-token', variable: 'API_TOKEN'),
                     string(credentialsId: 'oauth-client-id', variable: 'OAUTH_CLIENT_ID'),
                     string(credentialsId: 'oauth-client-secret', variable: 'OAUTH_CLIENT_SECRET'),
                     string(credentialsId: 'uat-base-url', variable: 'BASE_URL'),
                     string(credentialsId: 'api-base-url', variable: 'API_BASE_URL')
                 ]) {
-                    bat """
-                        docker run --rm ^
-                            -e CI=true ^
-                            -e ENV=uat ^
-                            -e BASE_URL=%BASE_URL% ^
-                            -e APP_USERNAME=%APP_USERNAME% ^
-                            -e APP_PASSWORD=%APP_PASSWORD% ^
-                            -e API_BASE_URL=%API_BASE_URL% ^
-                            -e API_TOKEN=%API_TOKEN% ^
-                            -e OAUTH_CLIENT_ID=%OAUTH_CLIENT_ID% ^
-                            -e OAUTH_CLIENT_SECRET=%OAUTH_CLIENT_SECRET% ^
-                            -e GRANT_TYPE=client_credentials ^
-                            -v "%WORKSPACE%\\reports-uat\\html:/app/reports/html-report" ^
-                            -v "%WORKSPACE%\\allure-results-uat:/app/allure-results" ^
-                            %DOCKER_IMAGE% ^
-                            npx playwright test --project=chromium --grep @sanity
-                    """
+
+                    bat '''
+                        set ENV=uat
+                        set BASE_URL=%BASE_URL%
+                        set APP_USERNAME=%APP_USERNAME%
+                        set APP_PASSWORD=%APP_PASSWORD%
+                        set API_BASE_URL=%API_BASE_URL%
+                        set API_TOKEN=%API_TOKEN%
+                        set OAUTH_CLIENT_ID=%OAUTH_CLIENT_ID%
+                        set OAUTH_CLIENT_SECRET=%OAUTH_CLIENT_SECRET%
+                        set GRANT_TYPE=client_credentials
+
+                        npx playwright test --project=chromium --grep @sanity
+                    '''
                 }
             }
+
             post {
                 always {
+
+                    bat 'if not exist reports-uat\\html mkdir reports-uat\\html'
                     bat 'if not exist reports-uat\\allure mkdir reports-uat\\allure'
-                    bat 'npx allure generate allure-results-uat --clean -o reports-uat\\allure 2>nul || exit /b 0'
-                    publishHTML(target: [reportName: 'UAT Sanity - PW HTML Report', reportDir: 'reports-uat\\html', reportFiles: 'index.html', keepAll: true, alwaysLinkToLastBuild: true])
-                    publishHTML(target: [reportName: 'UAT Sanity - Allure Report', reportDir: 'reports-uat\\allure', reportFiles: 'index.html', keepAll: true, alwaysLinkToLastBuild: true])
+
+                    bat 'if exist reports\\html-report xcopy /E /I /Y reports\\html-report\\* reports-uat\\html\\'
+
+                    bat 'if exist allure-results allure generate allure-results --clean -o reports-uat\\allure'
+
+                    publishHTML(target: [
+                        reportName: 'UAT - Playwright Report',
+                        reportDir: 'reports-uat/html',
+                        reportFiles: 'index.html',
+                        keepAll: true,
+                        alwaysLinkToLastBuild: true
+                    ])
+
+                    publishHTML(target: [
+                        reportName: 'UAT - Allure Report',
+                        reportDir: 'reports-uat/allure',
+                        reportFiles: 'index.html',
+                        keepAll: true,
+                        alwaysLinkToLastBuild: true
+                    ])
                 }
             }
         }
 
         stage('Approval for PROD') {
             steps {
-                input message: 'Deploy to PROD?', ok: 'Yes, Deploy!', submitter: 'admin,keshini'
+                input(
+                    message: 'Deploy to PROD?',
+                    ok: 'Deploy',
+                    submitter: 'admin,keshini'
+                )
             }
         }
 
         stage('Deploy to PROD') {
-            steps { echo 'Deploying to PROD... done' }
+            steps {
+                echo "Deploying to PROD..."
+                echo "PROD deployment completed."
+            }
         }
 
-        stage('PROD - Sanity Tests') {
+        stage('PROD - Smoke Tests') {
             steps {
-                echo 'Running SANITY @sanity on PROD (Docker)'
-                bat 'if not exist reports-prod\\html mkdir reports-prod\\html'
-                bat 'if not exist allure-results-prod mkdir allure-results-prod'
+
+                bat 'if exist allure-results rd /s /q allure-results'
+                bat 'if exist reports rd /s /q reports'
+
                 withCredentials([
-                    usernamePassword(credentialsId: 'prod-credentials', usernameVariable: 'APP_USERNAME', passwordVariable: 'APP_PASSWORD'),
+                    usernamePassword(
+                        credentialsId: 'prod-credentials',
+                        usernameVariable: 'APP_USERNAME',
+                        passwordVariable: 'APP_PASSWORD'
+                    ),
                     string(credentialsId: 'api-token', variable: 'API_TOKEN'),
                     string(credentialsId: 'oauth-client-id', variable: 'OAUTH_CLIENT_ID'),
                     string(credentialsId: 'oauth-client-secret', variable: 'OAUTH_CLIENT_SECRET'),
                     string(credentialsId: 'prod-base-url', variable: 'BASE_URL'),
                     string(credentialsId: 'api-base-url', variable: 'API_BASE_URL')
                 ]) {
-                    bat """
-                        docker run --rm ^
-                            -e CI=true ^
-                            -e ENV=prod ^
-                            -e BASE_URL=%BASE_URL% ^
-                            -e APP_USERNAME=%APP_USERNAME% ^
-                            -e APP_PASSWORD=%APP_PASSWORD% ^
-                            -e API_BASE_URL=%API_BASE_URL% ^
-                            -e API_TOKEN=%API_TOKEN% ^
-                            -e OAUTH_CLIENT_ID=%OAUTH_CLIENT_ID% ^
-                            -e OAUTH_CLIENT_SECRET=%OAUTH_CLIENT_SECRET% ^
-                            -e GRANT_TYPE=client_credentials ^
-                            -v "%WORKSPACE%\\reports-prod\\html:/app/reports/html-report" ^
-                            -v "%WORKSPACE%\\allure-results-prod:/app/allure-results" ^
-                            %DOCKER_IMAGE% ^
-                            npx playwright test --project=chromium --grep @sanity
-                    """
+
+                    bat '''
+                        set ENV=prod
+                        set BASE_URL=%BASE_URL%
+                        set APP_USERNAME=%APP_USERNAME%
+                        set APP_PASSWORD=%APP_PASSWORD%
+                        set API_BASE_URL=%API_BASE_URL%
+                        set API_TOKEN=%API_TOKEN%
+                        set OAUTH_CLIENT_ID=%OAUTH_CLIENT_ID%
+                        set OAUTH_CLIENT_SECRET=%OAUTH_CLIENT_SECRET%
+                        set GRANT_TYPE=client_credentials
+
+                        npx playwright test --project=chromium --grep @sanity
+                    '''
                 }
             }
+
             post {
                 always {
+
+                    bat 'if not exist reports-prod\\html mkdir reports-prod\\html'
                     bat 'if not exist reports-prod\\allure mkdir reports-prod\\allure'
-                    bat 'npx allure generate allure-results-prod --clean -o reports-prod\\allure 2>nul || exit /b 0'
-                    publishHTML(target: [reportName: 'PROD Sanity - PW HTML Report', reportDir: 'reports-prod\\html', reportFiles: 'index.html', keepAll: true, alwaysLinkToLastBuild: true])
-                    publishHTML(target: [reportName: 'PROD Sanity - Allure Report', reportDir: 'reports-prod\\allure', reportFiles: 'index.html', keepAll: true, alwaysLinkToLastBuild: true])
+
+                    bat 'if exist reports\\html-report xcopy /E /I /Y reports\\html-report\\* reports-prod\\html\\'
+
+                    bat 'if exist allure-results allure generate allure-results --clean -o reports-prod\\allure'
+
+                    publishHTML(target: [
+                        reportName: 'PROD - Playwright Report',
+                        reportDir: 'reports-prod/html',
+                        reportFiles: 'index.html',
+                        keepAll: true,
+                        alwaysLinkToLastBuild: true
+                    ])
+
+                    publishHTML(target: [
+                        reportName: 'PROD - Allure Report',
+                        reportDir: 'reports-prod/allure',
+                        reportFiles: 'index.html',
+                        keepAll: true,
+                        alwaysLinkToLastBuild: true
+                    ])
                 }
             }
         }
-    }
+    } 
 
     post {
         always {
             script {
+
                 def buildStatus = currentBuild.currentResult
-                def statusEmoji = buildStatus == 'SUCCESS' ? '✅' : '❌'
                 def statusColor = buildStatus == 'SUCCESS' ? 'good' : 'danger'
+                def statusEmoji = buildStatus == 'SUCCESS' ? '✅' : '❌'
 
-                slackSend(channel: env.SLACK_CHANNEL, color: statusColor, message: "🎭 *Playwright CI/CD Pipeline Report* 🐳\n\n*Overall: ${statusEmoji} ${buildStatus}*\n*Mode:* `Docker Containers`\n*Environment:* `${params.ENVIRONMENT}`\n*Build:* #${env.BUILD_NUMBER}\n*Duration:* ${currentBuild.durationString.replace(' and counting', '')}\n\n📊 <${env.BUILD_URL}|View Reports>\n🔍 <${env.BUILD_URL}console|Console Logs>")
+                slackSend(
+                    channel: env.SLACK_CHANNEL,
+                    color: statusColor,
+                    message: """
+                            🎭 *Playwright CI/CD Pipeline*
 
-                emailext(
-                to: 'kdpatel8184@gmail.com, patel.keshini.k3d@gmail.com', 
-                subject: "🎭 CI/CD (Docker) — ${statusEmoji} ${buildStatus} — Build #${env.BUILD_NUMBER}",
-                mimeType: 'text/html',
-                body: "<html><body style='font-family:Arial;padding:20px;background:#f5f5f5'><div style='max-width:700px;margin:0 auto;background:white;border-radius:12px;overflow:hidden'><div style='background:linear-gradient(135deg,#1a1a2e,#16213e);color:white;padding:30px;text-align:center'><h1 style='margin:0'>🎭 Playwright CI/CD Dashboard 🐳</h1><span style='display:inline-block;padding:6px 16px;border-radius:20px;font-weight:bold;margin-top:12px;background:${buildStatus == 'SUCCESS' ? '#28a745' : '#dc3545'};color:white'>${statusEmoji} ${buildStatus}</span></div><div style='padding:24px'><table style='width:100%;border-collapse:collapse'><tr><td style='padding:10px;color:#666'>Mode</td><td style='padding:10px;font-weight:bold'>🐳 Docker</td></tr><tr><td style='padding:10px;color:#666'>Environment</td><td style='padding:10px;font-weight:bold'>${params.ENVIRONMENT}</td></tr><tr><td style='padding:10px;color:#666'>Build</td><td style='padding:10px;font-weight:bold'>#${env.BUILD_NUMBER}</td></tr><tr><td style='padding:10px;color:#666'>Duration</td><td style='padding:10px;font-weight:bold'>${currentBuild.durationString.replace(' and counting', '')}</td></tr></table></div><div style='background:#f8f9fa;padding:20px 24px'><a href='${env.BUILD_URL}' style='display:inline-block;padding:10px 20px;background:#1a1a2e;color:white;text-decoration:none;border-radius:6px;margin:4px'>📁 Open Jenkins Build</a><a href='${env.BUILD_URL}console' style='display:inline-block;padding:10px 20px;background:#6c757d;color:white;text-decoration:none;border-radius:6px;margin:4px'>🔍 Console Logs</a></div></div></body></html>")
+                                *Status:* ${statusEmoji} ${buildStatus}
+                                *Environment:* ${params.ENVIRONMENT}
+                                *Browser:* ${params.BROWSER}
+                                *Suite:* ${params.TEST_SUITE}
+                                *Branch:* ${env.BRANCH_NAME ?: 'master'}
+                                *Build:* #${env.BUILD_NUMBER}
+                                *Duration:* ${currentBuild.durationString.replace(' and counting','')}
+
+                                📊 ${env.BUILD_URL}
+                    """
+                )
             }
-
-            bat "docker rmi %DOCKER_IMAGE% 2>nul || exit /b 0"
+             echo 'Pipeline finished.'
         }
-        success { echo 'PIPELINE: SUCCESS (Docker)' }
-        failure { echo 'PIPELINE: FAILED (Docker)' }
+
+        success {
+            echo 'Pipeline completed successfully.'
+        }
+
+        failure {
+            echo 'Pipeline failed.'
+             echo 'Pipeline failed.'
+        }
+
+        cleanup {
+
+            cleanWs(
+                cleanWhenNotBuilt: false,
+                deleteDirs: true,
+                disableDeferredWipeout: true
+            )
+        }
     }
 }
