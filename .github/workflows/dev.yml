@@ -1,0 +1,42 @@
+name: DEV Pipeline
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+
+  # ═════════════════════════════════════════════════════
+  # STEP 1: BUILD APP (DEV REPO - MAVEN)
+  # ═════════════════════════════════════════════════════
+  build:
+    name: Build & Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout DEV repo
+        uses: actions/checkout@v4
+        with:
+          repository: jglick/simple-maven-project-with-tests
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build & Run Unit Tests
+        run: |
+          echo "========================================="
+          echo "  Building App + Running Unit Tests"
+          echo "========================================="
+          mvn clean install -Dmaven.test.failure.ignore=true
+
+      - name: Upload Unit Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-results
+          path: target/surefire-reports/
+          retention-days: 30
