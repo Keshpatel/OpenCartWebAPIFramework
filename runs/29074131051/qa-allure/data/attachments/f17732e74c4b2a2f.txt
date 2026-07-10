@@ -1,0 +1,28 @@
+API Respose :  APIResponse: 200 OK
+  Date: Fri, 10 Jul 2026 06:34:58 GMT
+  Content-Type: application/json; charset=utf-8
+  Transfer-Encoding: chunked
+  Connection: keep-alive
+  Cache-Control: max-age=0, private, must-revalidate
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' https://pagead2.googlesyndication.com 'nonce-0Tf0aapOrt0CfGr6iruK9w=='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://pagead2.googlesyndication.com https://ep1.adtrafficquality.google; frame-src https://googleads.g.doubleclick.net https://ep2.adtrafficquality.google https://www.google.com; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  Etag: W/"aac3061ef6080d2ce31893b8f0251c4f"
+  Feature-Policy: camera 'none'; gyroscope 'none'; microphone 'none'; usb 'none'; fullscreen 'self'
+  Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=63072000; includeSubDomains
+  Vary: Origin
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  X-Permitted-Cross-Domain-Policies: none
+  X-Ratelimit-Limit: 300
+  X-Ratelimit-Remaining: 299
+  X-Ratelimit-Reset: 0
+  X-Request-Id: f9fd0586-3ced-48c2-b166-6f9eb3646144
+  X-Runtime: 0.858599
+  X-Xss-Protection: 0
+  Nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+  Cf-Cache-Status: DYNAMIC
+  Report-To: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=HtDylkWzr5wUSht%2BF3FBEhWnDLmCg4qblsoP7lgAYCT7TJxVoAaPT89BXaB3SpOH1ptx7%2B8wYbvLTwULsYvNICv5GxjjQH6rdwaFnik1Ey9vDZfkgOHHkTCLN50r9%2B4%3D"}]}
+  Content-Encoding: br
+  Server: cloudflare
+  CF-RAY: a18d8ba94e6a2b7c-LAX
+  alt-svc: h3=":443"; ma=86400
