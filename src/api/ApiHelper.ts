@@ -30,6 +30,8 @@ export class ApiHelper {
                 data: data
             }
         );
+         const rawText = await response.text();
+         console.log('RAW RESPONSE (POST):', JSON.stringify(rawText));
         return {
             status : response.status(),
             body: await response.json()
@@ -44,6 +46,8 @@ export class ApiHelper {
                 data: data
             }
         );
+        const rawText = await response.text();
+        console.log('RAW RESPONSE (PUT):', JSON.stringify(rawText));
         return {
             status : response.status(),
             body: await response.json()
@@ -59,6 +63,8 @@ export class ApiHelper {
                 headers
             }
         );
+        const rawText = await response.text();
+        console.log('RAW RESPONSE (PUT):', JSON.stringify(rawText));
         return {
             status: response.status(),
             body: await response.text()
