@@ -11,15 +11,15 @@ export class ApiHelper {
     }
 
     //GET
-    async get(endpoint: string, headers: Record<string, string> = {} ) {
-        let response = await this.request.get(`${this.baseURL}${endpoint}`, { headers }
-        );
-        console.log('API Respose : ', response)
+    async get(endpoint: string, headers: Record<string, string> = {}) {
+        let response = await this.request.get(`${this.baseURL}${endpoint}`, { headers });
+        const rawText = await response.text();
+        console.log('RAW RESPONSE:', JSON.stringify(rawText));
         return {
-            status : response.status(),
-            body: await response.json()
-        }
-    }
+            status: response.status(),
+            body: JSON.parse(rawText)
+        };
+   }
 
 
     //POST 
